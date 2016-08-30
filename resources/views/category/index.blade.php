@@ -11,19 +11,21 @@
       <table id="table_id" class="row-border">
         <thead>
         <tr>
-          <th>Column 1</th>
-          <th>Column 2</th>
+          <th>一级类别</th>
+          <th>二级类别</th>
+          <th>序列号</th>
+          <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Row 1 Data 1</td>
-          <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-          <td>Row 2 Data 1</td>
-          <td>Row 2 Data 2</td>
-        </tr>
+        @foreach($categories as $category)
+          <tr>
+            <td>{{$category->first}}</td>
+            <td>{{$category->second}}</td>
+            <td>{{$category->serial}}</td>
+            <td>修改|删除</td>
+          </tr>
+        @endforeach
         </tbody>
       </table>
     </div>

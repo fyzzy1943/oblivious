@@ -49,9 +49,13 @@
             更新管理 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/category">分类列表</a></li>
-            <li><a href="/category/create">添加分类</a></li>
+            <li><a href="/category">类别列表</a></li>
+            <li><a href="/category/create">添加类别</a></li>
             <li role="separator" class="divider"></li>
+            <li><a href="/update">更新控制列表</a></li>
+            <li><a href="/update/create">添加更新控制</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/update/article">所有文章</a></li>
           </ul>
         </li>
         <li><a href="#">Link</a></li>

@@ -21,4 +21,9 @@ class Category extends Model
             break;
         }
     }
+
+    public function updateRule()
+    {
+        $this->hasOne('App\UpdateRule', 'serial', 'serial');
+    }
 }

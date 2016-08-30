@@ -22,6 +22,8 @@ Route::get('/home', 'HomeController@index');
 Route::get('/user', 'UserController@showList');
 Route::get('/user/add', 'UserController@showCreateForm');
 
-Route::get('/category', 'UpdateController@showCategoryList');
-Route::get('/category/create', 'UpdateController@showCategoryCreateForm');
-Route::post('/category', 'UpdateController@storeCategory');
+Route::get('/category', 'CategoryController@showCategoryList');
+Route::get('/category/create', 'CategoryController@showCategoryCreateForm');
+Route::post('/category', 'CategoryController@storeCategory');
+
+Route::resource('/update', 'UpdateController');
