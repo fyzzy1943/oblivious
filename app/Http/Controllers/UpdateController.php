@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\UpdateRule;
 use Illuminate\Http\Request;
 
@@ -86,5 +87,28 @@ class UpdateController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function makeArticle($serial = '*')
+    {
+        echo $serial;
+        $rule = UpdateRule::where('serial', $serial)->first();
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $rule->url);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
+
+        $html = curl_exec($ch);
+
+//        echo '<pre>';
+//        var_dump($rule);
+        preg_match($rule->url_area, $html, $match);
+        preg_match_all('/\<li\>\<a href\="(.*?)" target\="_blank"\>.*?\<\/a\>/s', $match[1], $urls);
+
+        curl_close($ch);
+
+        dd($urls, curl_version(), $rule);
     }
 }

@@ -27,3 +27,5 @@ Route::get('/category/create', 'CategoryController@showCategoryCreateForm');
 Route::post('/category', 'CategoryController@storeCategory');
 
 Route::resource('/update', 'UpdateController');
+
+Route::get('/article/update/{serial?}', 'UpdateController@makeArticle');
