@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Helper\url;
+use App\Providers\IProvider;
 use App\UpdateRule;
 use Illuminate\Http\Request;
 
@@ -89,10 +91,11 @@ class UpdateController extends Controller
         //
     }
 
-    public function makeArticle($serial = '*')
+    public function makeArticle($serial = '*', url $helper)
     {
-        echo $serial;
+        echo $serial, '<br>';
         $rule = UpdateRule::where('serial', $serial)->first();
+        $domain = $helper->getDomain($rule->url);
 
         $ch = curl_init();
 
@@ -102,13 +105,39 @@ class UpdateController extends Controller
 
         $html = curl_exec($ch);
 
-//        echo '<pre>';
-//        var_dump($rule);
         preg_match($rule->url_area, $html, $match);
-        preg_match_all('/\<li\>\<a href\="(.*?)" target\="_blank"\>.*?\<\/a\>/s', $match[1], $urls);
+        preg_match_all($rule->url_rule, $match[1], $urls);
+
+        $urls = array_map(function ($url) use ($helper, $rule) {
+            return $helper->getFullUrl($rule->url, $url);
+        }, $urls[1]);
+
+        curl_setopt($ch, CURLOPT_URL, $urls[0]);
+        $html = curl_exec($ch);
+
+        preg_match($rule->content_area, $html, $match);
+
+        preg_match($rule->title_rule, $match[1], $title);
+        $title = trim($title[1]);
+        preg_match($rule->date_rule, $match[1], $date);
+        $date = '发布时间：' . trim($date[1]);
+        preg_match($rule->article_rule, $match[1], $article);
+        $article = $this->processArticle($article[1]);
+
+//        foreach ($urls as $url) {
+//
+//        }
 
         curl_close($ch);
+        dd($match[1], $title, $date, $article);
 
-        dd($urls, curl_version(), $rule);
+        dd($domain, $urls, $rule);
+    }
+
+    protected function processArticle($article)
+    {
+        $article = preg_replace('/<(style|script)[^>]*?>.*?<\/\1>/s', '', $article);
+
+        return $article;
     }
 }
