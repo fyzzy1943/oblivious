@@ -9,6 +9,7 @@ use App\UpdateRule;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateController extends Controller
 {
@@ -118,15 +119,28 @@ class UpdateController extends Controller
 
             preg_match($rule->content_area, $html, $match);
 
-            var_dump($url);
             preg_match($rule->title_rule, $match[1], $title);
             $title = trim($title[1]);
             preg_match($rule->date_rule, $match[1], $date);
             $date = '发布时间：' . trim($date[1]);
             preg_match($rule->article_rule, $match[1], $article);
-            $article = $this->processArticle($article[1]);
+            $article = $this->processArticle($article[1], $images);
 
-            var_dump($title, $article);
+            $images = array_map(function ($image) use ($helper, $url) {
+                return $helper->getFullImageUrl($url, $image);
+            }, $images);
+
+            foreach ($images as $key => $val) {
+                ob_start();
+                readfile($val);
+                $img=ob_get_contents();
+                Storage::put($key, $img);
+                ob_end_clean();
+                break;
+            }
+
+
+            var_dump($title, $article, $images);
         }
 
         curl_close($ch);
@@ -135,8 +149,10 @@ class UpdateController extends Controller
         dd($domain, $urls, $rule);
     }
 
-    protected function processArticle($article)
+    protected function processArticle($article, &$images)
     {
+        $images = array();
+
         $article = preg_replace('/\n/s', '', $article);
         $article = preg_replace('/&nbsp;/', ' ', $article);
 
@@ -176,7 +192,14 @@ class UpdateController extends Controller
             }
         }
 
-
+        preg_match_all('/<img[^>]*?src[^>]*?>/i', $article, $matches);
+        foreach ($matches[0] as $match) {
+            preg_match('/\bsrc=["\']([^"^\']*?)["\']/i', $match, $tmp);
+            $sha1 = hash('sha1', uniqid());
+//            var_dump('/'.preg_quote($match, '/').'/');
+            $article = preg_replace('/'.preg_quote($match, '/').'/', '{IMG:'.$sha1.'}', $article);
+            $images[$sha1] = $tmp[1];
+        }
 
         return $article;
     }
