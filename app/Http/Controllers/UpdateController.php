@@ -93,7 +93,7 @@ class UpdateController extends Controller
 
     public function makeArticle($serial = '*', url $helper)
     {
-        echo $serial, '<br>';
+        echo $serial, '<pre>';
         $rule = UpdateRule::where('serial', $serial)->first();
         $domain = $helper->getDomain($rule->url);
 
@@ -112,31 +112,71 @@ class UpdateController extends Controller
             return $helper->getFullUrl($rule->url, $url);
         }, $urls[1]);
 
-        curl_setopt($ch, CURLOPT_URL, $urls[0]);
-        $html = curl_exec($ch);
+        foreach (array_reverse($urls) as $url) {
+            curl_setopt($ch, CURLOPT_URL, $url);
+            $html = curl_exec($ch);
 
-        preg_match($rule->content_area, $html, $match);
+            preg_match($rule->content_area, $html, $match);
 
-        preg_match($rule->title_rule, $match[1], $title);
-        $title = trim($title[1]);
-        preg_match($rule->date_rule, $match[1], $date);
-        $date = '发布时间：' . trim($date[1]);
-        preg_match($rule->article_rule, $match[1], $article);
-        $article = $this->processArticle($article[1]);
+            var_dump($url);
+            preg_match($rule->title_rule, $match[1], $title);
+            $title = trim($title[1]);
+            preg_match($rule->date_rule, $match[1], $date);
+            $date = '发布时间：' . trim($date[1]);
+            preg_match($rule->article_rule, $match[1], $article);
+            $article = $this->processArticle($article[1]);
 
-//        foreach ($urls as $url) {
-//
-//        }
+            var_dump($title, $article);
+        }
 
         curl_close($ch);
-        dd($match[1], $title, $date, $article);
+//        dd($match[1], $title, $date, $article);
 
         dd($domain, $urls, $rule);
     }
 
     protected function processArticle($article)
     {
-        $article = preg_replace('/<(style|script)[^>]*?>.*?<\/\1>/s', '', $article);
+        $article = preg_replace('/\n/s', '', $article);
+        $article = preg_replace('/&nbsp;/', ' ', $article);
+
+        $article = preg_replace('/<(style|script)[^>]*?>.*?<\/\1>/i', '', $article);
+
+        // 处理换行
+        $article = preg_replace('/(<\/p>|<\/div>|<\/h\d>)/i', '\1{BR}', $article);
+        $article = preg_replace('/(<br\s*\/>|<br\s*>)/i', '\1{BR}', $article);
+
+        // 匹配右对齐
+        preg_match_all('/<(p|td|div)[^>]*?align[\s:"\'=]*?right[^>]*?>(.*?)<\/\1>/i',
+            $article, $matches);
+        foreach ($matches[2] as $match) {
+            if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
+                    preg_match('/<img/', $match) == 0) {
+                $article = str_replace($article, $match, '{PAR}'.trim($match).'{/P}');
+            }
+        }
+
+        // 匹配中间对齐
+        preg_match_all('/<(p|td|div)[^>]*?align[\s:"\'=]*?center[^>]*?>(.*?)<\/\1>/i',
+            $article, $matches);
+        foreach ($matches[2] as $match) {
+            if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
+                preg_match('/<img/', $match) == 0) {
+                $article = str_replace($article, $match, '{PAC}'.trim($match).'{/P}');
+            }
+        }
+
+        // 匹配左对齐
+        preg_match_all('/<(p|td|div)[^>]*?align[\s:"\'=]*?left[^>]*?>(.*?)<\/\1>/i',
+            $article, $matches);
+        foreach ($matches[2] as $match) {
+            if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
+                preg_match('/<img/', $match) == 0) {
+                $article = str_replace($article, $match, '{PAL}'.trim($match).'{/P}');
+            }
+        }
+
+
 
         return $article;
     }

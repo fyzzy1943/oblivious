@@ -29,17 +29,24 @@ class url
         }
 
         $part1 = rtrim($part1, '/') . '/';
+        $part1 = strrev($part1);
 
         while (true) {
             if (starts_with($part2, './')) {
                 $part2 = substr($part2, 2);
-                preg_match('/(.*)\//', $part1, $part1_temp);
-                $part1 = $part1_temp[1];
+                $part1 = substr($part1, strpos($part1, '/') + 1);
+            } else if (starts_with($part2, '../')) {
+                if (starts_with($part1, '/')) {
+                    $part1 = substr($part1, strpos($part1, '/') + 1);
+                }
+
+                $part2 = substr($part2, 3);
+                $part1 = substr($part1, strpos($part1, '/') + 1);
             } else {
                 break;
             }
         }
 
-        return $part1 . '/' .$part2;
+        return strrev($part1) . '/' .$part2;
     }
 }
