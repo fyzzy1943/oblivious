@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $str = '  hello world　　';
+        var_dump(trim($str, '　 '));
         return view('home.welcome');
     }
 }

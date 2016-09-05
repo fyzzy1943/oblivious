@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Category;
 use App\Helper\url;
+use App\Image;
 use App\Providers\IProvider;
 use App\UpdateRule;
 use Illuminate\Http\Request;
@@ -96,6 +98,9 @@ class UpdateController extends Controller
     {
         echo $serial, '<pre>';
         $rule = UpdateRule::where('serial', $serial)->first();
+        if ($rule == null) {
+            return '此序列号不存在';
+        }
         $domain = $helper->getDomain($rule->url);
 
         $ch = curl_init();
@@ -104,11 +109,14 @@ class UpdateController extends Controller
         curl_setopt($ch, CURLOPT_URL, $rule->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
 
+        // 获取列表页面
         $html = curl_exec($ch);
 
+        // 获取内容页面URL列表
         preg_match($rule->url_area, $html, $match);
         preg_match_all($rule->url_rule, $match[1], $urls);
 
+        // 组合内容页面URL
         $urls = array_map(function ($url) use ($helper, $rule) {
             return $helper->getFullUrl($rule->url, $url);
         }, $urls[1]);
@@ -117,36 +125,63 @@ class UpdateController extends Controller
             curl_setopt($ch, CURLOPT_URL, $url);
             $html = curl_exec($ch);
 
+            // 获取内容区域
             preg_match($rule->content_area, $html, $match);
 
+            // 获取标题
             preg_match($rule->title_rule, $match[1], $title);
             $title = trim($title[1]);
+
+            if (Article::where('title', $title)->first() != null) {
+                continue;
+            }
+
+            // 获取日期
             preg_match($rule->date_rule, $match[1], $date);
             $date = '发布时间：' . trim($date[1]);
+            // 获取文章
             preg_match($rule->article_rule, $match[1], $article);
             $article = $this->processArticle($article[1], $images);
 
+            // 得到图片数组
             $images = array_map(function ($image) use ($helper, $url) {
                 return $helper->getFullImageUrl($url, $image);
             }, $images);
 
+            // 下载图片
             foreach ($images as $key => $val) {
-                ob_start();
-                readfile($val);
-                $img=ob_get_contents();
-                Storage::put($key, $img);
-                ob_end_clean();
-                break;
+                curl_setopt($ch, CURLOPT_URL, $val);
+                curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+                curl_setopt($ch, CURLOPT_REFERER, $url);
+                curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                $result = curl_exec($ch);
+                $path = date("Ymd").'/'.$key;
+                Storage::put($path, $result);
+
+                $image = new Image();
+                $image->img = $key;
+                $image->path = $path;
+                $image->save();
             }
 
+            $ar = new Article();
+            $ar->serial = $serial;
+            $ar->url = $url;
+            $ar->title = $title;
+            $ar->date = $date;
+            $ar->article = $article;
+            $ar->save();
 
-            var_dump($title, $article, $images);
+//            var_dump($title, $article, $images);
         }
 
         curl_close($ch);
 //        dd($match[1], $title, $date, $article);
 
-        dd($domain, $urls, $rule);
+//        dd($domain, $urls, $rule);
     }
 
     protected function processArticle($article, &$images)
@@ -156,6 +191,7 @@ class UpdateController extends Controller
         $article = preg_replace('/\n/s', '', $article);
         $article = preg_replace('/&nbsp;/', ' ', $article);
 
+        // 去掉style和script标签
         $article = preg_replace('/<(style|script)[^>]*?>.*?<\/\1>/i', '', $article);
 
         // 处理换行
@@ -168,7 +204,7 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                     preg_match('/<img/', $match) == 0) {
-                $article = str_replace($article, $match, '{PAR}'.trim($match).'{/P}');
+                $article = str_replace($match, '{PAR}'.trim($match, '　 ').'{/P}', $article);
             }
         }
 
@@ -178,7 +214,8 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                 preg_match('/<img/', $match) == 0) {
-                $article = str_replace($article, $match, '{PAC}'.trim($match).'{/P}');
+//                var_dump($match, trim($match));
+                $article = str_replace($match, '{PAC}'.trim($match, '　 ').'{/P}', $article);
             }
         }
 
@@ -188,7 +225,7 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                 preg_match('/<img/', $match) == 0) {
-                $article = str_replace($article, $match, '{PAL}'.trim($match).'{/P}');
+                $article = str_replace($match, '{PAL}'.trim($match, '　 ').'{/P}', $article);
             }
         }
 
@@ -196,10 +233,56 @@ class UpdateController extends Controller
         foreach ($matches[0] as $match) {
             preg_match('/\bsrc=["\']([^"^\']*?)["\']/i', $match, $tmp);
             $sha1 = hash('sha1', uniqid());
-//            var_dump('/'.preg_quote($match, '/').'/');
             $article = preg_replace('/'.preg_quote($match, '/').'/', '{IMG:'.$sha1.'}', $article);
             $images[$sha1] = $tmp[1];
         }
+
+        // 去掉无用标签
+        $article = preg_replace('/<.*?>/', '', $article);
+        $article = preg_replace('/{PAC}\s*{\/P}/', '', $article);
+        $article = preg_replace('/{PAR}\s*{\/P}/', '', $article);
+        $article = preg_replace('/{PAL}\s*{\/P}/', '', $article);
+
+        // 添加标签
+        $article = preg_replace('/{PAC}(.*?){\/P}/', '<p align="center">\1</p>', $article);
+        $article = preg_replace('/{PAR}(.*?){\/P}/', '<p align="right">\1</p>', $article);
+        $article = preg_replace('/{PAL}(.*?){\/P}/', '<p align="left">\1</p>', $article);
+
+        $article = preg_replace('/{(PAC|PAR|PAL|\/P)}/', '', $article);
+
+        // 清除多余
+        $article = preg_replace('/<p align="center">\s*<\/p>/', '', $article);
+        $article = preg_replace('/<p align="right">\s*<\/p>/', '', $article);
+        $article = preg_replace('/<p align="left">\s*<\/p>/', '', $article);
+
+        $lines = explode('{BR}', $article);
+        $article = '';
+        $align = false;
+
+        foreach ($lines as $line) {
+            $line = trim($line, '　 ');
+            if ( ! $line == '') {
+                if (str_contains($line, '<p align')) {
+                    $align = true;
+                }
+                if (starts_with($line, '<')) {
+                    $article .= $line . '\r\n';
+                } else {
+                    if ($align) {
+                        $article .= $line . '\r\n';
+                    } else {
+                        $article .= '　　' . $line . '\r\n';
+                    }
+                }
+                if (str_contains($line, '</p>')) {
+                    $align = false;
+                }
+            }
+        }
+
+        $article .= '\r\n\r\n\r\n\r\n\r\n\r\n\r\n';
+
+//        $article = htmlspecialchars_decode($article);
 
         return $article;
     }
