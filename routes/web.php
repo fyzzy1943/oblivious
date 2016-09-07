@@ -29,3 +29,7 @@ Route::post('/category', 'CategoryController@storeCategory');
 Route::resource('/update', 'UpdateController');
 
 Route::get('/article/update/{serial?}', 'UpdateController@makeArticle');
+
+Route::get('phpinfo', function () {
+    return phpinfo();
+});
