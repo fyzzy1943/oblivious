@@ -30,6 +30,11 @@ Route::resource('/update', 'UpdateController');
 
 Route::get('/article/update/{serial?}', 'UpdateController@makeArticle');
 
+Route::group(['prefix' => 'get'], function () {
+    Route::get('image/{img}', 'ArticleController@getImage');
+    Route::get('article/{serial}/{num?}', 'ArticleController@getArticle');
+});
+
 Route::get('phpinfo', function () {
     return phpinfo();
 });
