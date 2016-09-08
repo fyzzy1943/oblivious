@@ -96,7 +96,8 @@ class UpdateController extends Controller
 
     public function makeArticle($serial = '*', url $helper)
     {
-        echo $serial, '<pre>';
+        header('X-Accel-Buffering: no');
+        echo $serial, '<br>';
         $rule = UpdateRule::where('serial', $serial)->first();
         if ($rule == null) {
             return '此序列号不存在';
@@ -123,6 +124,8 @@ class UpdateController extends Controller
 
         foreach (array_reverse($urls) as $url) {
             curl_setopt($ch, CURLOPT_URL, $url);
+//            curl_setopt($ch, CURLOPT_URL, 'http://www.hljlr.gov.cn/hljgtzyt/xwdt/tndt/201609/t20160905_146597.htm');
+//            curl_setopt($ch, CURLOPT_URL, 'http://www.hljlr.gov.cn/hljgtzyt/xwdt/tndt/201609/t20160906_146671.htm');
             $html = curl_exec($ch);
 
             // 获取内容区域
@@ -165,6 +168,7 @@ class UpdateController extends Controller
                 $image->img = $key;
                 $image->path = $path;
                 $image->save();
+                var_dump($key);
             }
 
             $ar = new Article();
@@ -175,7 +179,10 @@ class UpdateController extends Controller
             $ar->article = $article;
             $ar->save();
 
-//            var_dump($title, $article, $images);
+            var_dump($title);
+            @ob_flush(); @flush();
+
+//            dd($title, $article, $images);
         }
 
         curl_close($ch);
@@ -190,6 +197,7 @@ class UpdateController extends Controller
 
         $article = preg_replace('/\n/s', '', $article);
         $article = preg_replace('/&nbsp;/', ' ', $article);
+        $article = str_replace('　', ' ', $article);
 
         // 去掉style和script标签
         $article = preg_replace('/<(style|script)[^>]*?>.*?<\/\1>/i', '', $article);
@@ -204,7 +212,7 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                     preg_match('/<img/', $match) == 0) {
-                $article = str_replace($match, '{PAR}'.trim($match, '　 ').'{/P}', $article);
+                $article = str_replace($match, '{PAR}'.trim($match).'{/P}', $article);
             }
         }
 
@@ -214,8 +222,8 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                 preg_match('/<img/', $match) == 0) {
-//                var_dump($match, trim($match));
-                $article = str_replace($match, '{PAC}'.trim($match, '　 ').'{/P}', $article);
+//                var_dump(htmlentities($match), trim($match));
+                $article = str_replace($match, '{PAC}'.trim($match).'{/P}', $article);
             }
         }
 
@@ -225,7 +233,7 @@ class UpdateController extends Controller
         foreach ($matches[2] as $match) {
             if (preg_match('/[\x{4E00}-\x{9FA5}]+/u', $match) > 0 &&
                 preg_match('/<img/', $match) == 0) {
-                $article = str_replace($match, '{PAL}'.trim($match, '　 ').'{/P}', $article);
+                $article = str_replace($match, '{PAL}'.trim($match).'{/P}', $article);
             }
         }
 
@@ -244,23 +252,20 @@ class UpdateController extends Controller
         $article = preg_replace('/{PAL}\s*{\/P}/', '', $article);
 
         // 添加标签
-        $article = preg_replace('/{PAC}(.*?){\/P}/', '<p align="center">\1</p>', $article);
-        $article = preg_replace('/{PAR}(.*?){\/P}/', '<p align="right">\1</p>', $article);
-        $article = preg_replace('/{PAL}(.*?){\/P}/', '<p align="left">\1</p>', $article);
+        $article = preg_replace('/{PAC}\s*(.*?){\/P}/', '<p align="center">\1</p>', $article);
+        $article = preg_replace('/{PAR}\s*(.*?){\/P}/', '<p align="right">\1</p>', $article);
+        $article = preg_replace('/{PAL}\s*(.*?){\/P}/', '<p align="left">\1</p>', $article);
 
         $article = preg_replace('/{(PAC|PAR|PAL|\/P)}/', '', $article);
-
-        // 清除多余
-        $article = preg_replace('/<p align="center">\s*<\/p>/', '', $article);
-        $article = preg_replace('/<p align="right">\s*<\/p>/', '', $article);
-        $article = preg_replace('/<p align="left">\s*<\/p>/', '', $article);
 
         $lines = explode('{BR}', $article);
         $article = '';
         $align = false;
 
+//        dd($lines);
+
         foreach ($lines as $line) {
-            $line = trim($line, '　 ');
+            $line = trim($line);
             if ( ! $line == '') {
                 if (str_contains($line, '<p align')) {
                     $align = true;
@@ -280,6 +285,7 @@ class UpdateController extends Controller
             }
         }
 
+//        dd($article);
         $article .= '\r\n\r\n\r\n\r\n\r\n\r\n\r\n';
 
 //        $article = htmlspecialchars_decode($article);
