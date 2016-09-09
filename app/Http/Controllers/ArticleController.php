@@ -15,7 +15,15 @@ class ArticleController extends Controller
     {
         $img = Image::select('path')->where('img', $img)->first();
 
-        return $img != null ? url(Storage::url($img->path)) : 'null';
+        if ($img == null) {
+            return 'null';
+        }
+
+        if ( ! Storage::exists($img->path)) {
+            return 'not exists';
+        }
+
+        return redirect(url(Storage::url($img->path)));
     }
 
     public function getArticle($serial, $num = 10)
