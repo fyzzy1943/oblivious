@@ -98,6 +98,7 @@ class UpdateController extends Controller
     {
         header('X-Accel-Buffering: no');
         echo $serial, '<br>';
+
         $rule = UpdateRule::where('serial', $serial)->first();
         if ($rule == null) {
             return '此序列号不存在';
@@ -179,7 +180,7 @@ class UpdateController extends Controller
             $ar->article = $article;
             $ar->save();
 
-            var_dump($title);
+            var_dump($title, '<br/>');
             @ob_flush(); @flush();
 
 //            dd($title, $article, $images);
@@ -204,7 +205,7 @@ class UpdateController extends Controller
 
         // 处理换行
         $article = preg_replace('/(<\/p>|<\/div>|<\/h\d>)/i', '\1{BR}', $article);
-        $article = preg_replace('/(<br\s*\/>|<br\s*>)/i', '\1{BR}', $article);
+        $article = preg_replace('/(<br.*?\/>|<br.*?>)/i', '\1{BR}', $article);
 
         // 匹配右对齐
         preg_match_all('/<(p|td|div)[^>]*?align[\s:"\'=]*?right[^>]*?>(.*?)<\/\1>/i',

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Storage;
 
-class ArticleController extends Controller
+class GetController extends Controller
 {
     public function getImage($img)
     {
@@ -30,10 +30,31 @@ class ArticleController extends Controller
     {
         $articles = Article::select('title', 'date', 'article')
             ->where('serial', $serial)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->limit($num)
             ->get();
 
         return count($articles) != 0 ? $articles->toJson() : 'null';
+    }
+
+    public function getTitle($title)
+    {
+        $image = new \Imagick();
+        $draw = new \ImagickDraw();
+        $pixel = new \ImagickPixel('white');
+        $image->newImage(750, 50, $pixel);
+        $pixel->setColor('rgb(23, 23, 23)');
+        $draw->setFont('Times');
+        $draw->setFontSize(30);
+        $draw->setFillColor($pixel);
+        $image->annotateImage($draw, 10, 45, 0, $title);
+
+        $image->setImageFormat('png');
+//        echo $image->getFormat();
+        return response($image->getImageBlob())
+            ->header('Content-Type', 'image/png');
+//        header('Content-Type: image/png');
+//        echo $image;
+//        dd(\Imagick::getVersion(), $title);
     }
 }
