@@ -79,9 +79,5 @@ class GetController extends Controller
 
         return response($image->getImageBlob())
             ->header('Content-Type', 'image/png');
-
-
-//        echo $image;
-//        dd(\Imagick::getVersion(), $title);
     }
 }
