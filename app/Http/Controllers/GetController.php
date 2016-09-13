@@ -11,6 +11,22 @@ use Illuminate\Support\Facades\Storage;
 
 class GetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function getArticles($serial, $num = 10)
+    {
+        $articles = Article::select('title', 'date', 'article')
+            ->where('serial', $serial)
+            ->orderBy('id', 'desc')
+            ->limit($num)
+            ->get();
+
+        return count($articles) != 0 ? $articles->toJson() : 'null';
+    }
+
     public function getImage($img)
     {
         $img = Image::select('path')->where('img', $img)->first();
@@ -24,17 +40,6 @@ class GetController extends Controller
         }
 
         return redirect(url(Storage::url($img->path)));
-    }
-
-    public function getArticle($serial, $num = 10)
-    {
-        $articles = Article::select('title', 'date', 'article')
-            ->where('serial', $serial)
-            ->orderBy('id', 'desc')
-            ->limit($num)
-            ->get();
-
-        return count($articles) != 0 ? $articles->toJson() : 'null';
     }
 
     public function getTitle($title, $isShadow)

@@ -32,7 +32,7 @@ Route::get('/article/update/{serial?}', 'UpdateController@makeArticle');
 
 Route::group(['prefix' => 'get'], function () {
     Route::get('image/{img}', 'GetController@getImage');
-    Route::get('article/{serial}/{num?}', 'GetController@getArticle');
+    Route::get('articles/{serial}/{num?}', 'GetController@getArticles');
     Route::get('title/{title}/{isShadow}', 'GetController@getTitle');
 });
 
