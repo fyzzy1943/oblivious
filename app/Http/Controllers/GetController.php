@@ -37,23 +37,50 @@ class GetController extends Controller
         return count($articles) != 0 ? $articles->toJson() : 'null';
     }
 
-    public function getTitle($title)
+    public function getTitle($title, $isShadow)
     {
         $image = new \Imagick();
-        $draw = new \ImagickDraw();
-        $pixel = new \ImagickPixel('white');
-        $image->newImage(750, 50, $pixel);
-        $pixel->setColor('rgb(23, 23, 23)');
-        $draw->setFont('Times');
-        $draw->setFontSize(30);
-        $draw->setFillColor($pixel);
-        $image->annotateImage($draw, 10, 45, 0, $title);
-
+        $image->newImage(750, 50, new \ImagickPixel('#fff'));
         $image->setImageFormat('png');
-//        echo $image->getFormat();
+
+        $icon = new \ImagickDraw();
+        if ($isShadow=='true') {
+            $icon->setFillColor(new \ImagickPixel('#800'));
+        } else {
+            $icon->setFillColor(new \ImagickPixel('#B00'));
+        }
+        $points = [
+            ['x'=>3, 'y'=>18],
+            ['x'=>19, 'y'=>25],
+            ['x'=>3, 'y'=>32],
+            ['x'=>7, 'y'=>25],
+        ];
+        $icon->polygon($points);
+        $image->drawImage($icon);
+
+        $text = new \ImagickDraw();
+        $text->setFont('/home/wwwroot/fonts/chinese.msyh.ttf');
+        $text->setFontSize(19);
+        $text->setTextAntialias(true);
+        if ($isShadow=='true') {
+            $text->setFillColor(new \ImagickPixel('rgb(0, 0, 0)'));
+            $image->annotateImage($text, 43, 33, 0, $title);
+        } else {
+            $text->setFillColor(new \ImagickPixel('rgb(23, 23, 23)'));
+            $image->annotateImage($text, 42, 32, 0, $title);
+        }
+
+        $line = new \ImagickDraw();
+        $line->setStrokeColor(new \ImagickPixel('rgb(217, 217, 217)'));
+        for ($i=3; $i<=740; $i+=17) {
+            $line->line($i, 48, $i+7, 48);
+        }
+        $image->drawImage($line);
+
         return response($image->getImageBlob())
             ->header('Content-Type', 'image/png');
-//        header('Content-Type: image/png');
+
+
 //        echo $image;
 //        dd(\Imagick::getVersion(), $title);
     }
