@@ -44,34 +44,29 @@
             <li><a href="#">人员列表</a></li>
           </ul>
         </li>
-        <li class="dropdown">
+        <li class="dropdown @if (Request::is('system/*')) active @endif">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            更新管理 <span class="caret"></span>
+            系统管理 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/category">类别列表</a></li>
-            <li><a href="/category/create">添加类别</a></li>
+            <li><a href="/system/category">类别列表</a></li>
+            <li><a href="/system/category/create">添加类别</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/update">更新控制列表</a></li>
-            <li><a href="/update/create">添加更新控制</a></li>
+            <li><a href="/system/rules">更新控制列表</a></li>
+            <li><a href="/system/rules/create">添加更新控制</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/update/article">所有文章</a></li>
+            <li><a href="/system/update/article">所有文章</a></li>
           </ul>
         </li>
-        <li><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            辅助工具 <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><a href="/helper/regex/list">列表正则测试</a></li>
           </ul>
         </li>
+        <li><a href="#">#</a></li>
       </ul>
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">

@@ -9,6 +9,11 @@ use App\Http\Requests;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function showCategoryList()
     {
         $categories = Category::all();
@@ -28,6 +33,6 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect('/category');
+        return redirect('category');
     }
 }

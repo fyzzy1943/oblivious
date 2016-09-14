@@ -13,16 +13,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Storage;
 
-class UpdateController extends Controller
+class RuleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view('update.index')->with('rules', UpdateRule::all());
+        return view('rule.index')->with('rules', UpdateRule::all());
     }
 
     /**
@@ -32,7 +33,7 @@ class UpdateController extends Controller
      */
     public function create()
     {
-        return view('update.create');
+        return view('rule.create');
     }
 
     /**
@@ -41,12 +42,12 @@ class UpdateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\RuleStoreRequest $request)
     {
         $ur = new UpdateRule($request->all());
         $ur->save();
 
-        return redirect('/update');
+        return redirect('rule');
     }
 
     /**

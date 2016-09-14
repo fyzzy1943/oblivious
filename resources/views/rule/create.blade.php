@@ -9,7 +9,7 @@
             添加更新规则
           </div>
           <div class="panel-body">
-            <form class="form-horizontal" action="/update" method="POST">
+            <form class="form-horizontal" action="/rules" method="POST">
               {{csrf_field()}}
               <div class="form-group">
                 <label for="serial" class="col-sm-2 control-label">序列号</label>
