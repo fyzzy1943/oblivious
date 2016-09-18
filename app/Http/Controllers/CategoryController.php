@@ -33,6 +33,25 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect('category');
+        return redirect('system/category');
+    }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+
+        return view('category.edit')->with($category->toArray());
+    }
+
+    public function update(Requests\CategoryStoreRequest $request, $id)
+    {
+        $category = Category::findOrFail($id);
+
+        $category->first = $request->input('first');
+        $category->second = $request->input('second');
+
+        $category->save();
+
+        return redirect('system/category')->with('info', ['修改成功']);
     }
 }

@@ -28,9 +28,9 @@ class HelperController extends Controller
         if (empty($area_regex)) {
             return view('helper.listRegexTest')->with('result', $html);
         }
+
         preg_match($area_regex, $html, $result);
         $html = $result[1] ?? '';
-
         if (empty($html)) {
             return view('helper.listRegexTest')->withErrors('区域无匹配');
         }
@@ -38,9 +38,16 @@ class HelperController extends Controller
         if (empty($list_regex)) {
             return view('helper.listRegexTest')->with('result', $html);
         }
+
         preg_match_all($list_regex, $html, $result);
 
-        dd(count($result));
+        $html = $result[1] ?? '';
+        if (empty($html)) {
+            return view('helper.listRegexTest')->withErrors('列表无匹配');
+        }
+
+        $html = implode(PHP_EOL, $html);
+//        dd($html);
 
         return view('helper.listRegexTest')->with('result', $html);
     }

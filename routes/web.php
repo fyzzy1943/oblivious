@@ -26,6 +26,8 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::get('category', 'CategoryController@showCategoryList');
     Route::get('category/create', 'CategoryController@showCategoryCreateForm');
     Route::post('category', 'CategoryController@storeCategory');
+    Route::get('category/{id}/edit', 'CategoryController@edit');
+    Route::put('category/{id}', 'CategoryController@update');
 
     Route::resource('rules', 'RuleController');
 });

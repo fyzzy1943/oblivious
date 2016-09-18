@@ -6,26 +6,28 @@
       <div class="col-md-8 col-md-offset-2">
         <div class="panel @if (count($errors)>0) panel-danger @else panel-info @endif">
           <div class="panel-heading">
-            添加类别
+            修改类别
           </div>
           <div class="panel-body">
-            <form class="form-horizontal" action="/system/category" method="POST">
+            <form class="form-horizontal" action="/system/category/{{$id}}" method="POST">
+              {{method_field('PUT')}}
               {{csrf_field()}}
+
               <div class="form-group">
                 <label for="first" class="col-sm-2 control-label">一级类别</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="first" name="first" value="{{old('first')}}">
+                  <input type="text" class="form-control" id="first" name="first" value="{{old('first', $first)}}">
                 </div>
               </div>
               <div class="form-group">
                 <label for="second" class="col-sm-2 control-label">二级类别</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="second" name="second" value="{{old('second')}}">
+                  <input type="text" class="form-control" id="second" name="second" value="{{old('second', $second)}}">
                 </div>
               </div>
               @if (count($errors) > 0)
                 <div class="alert alert-danger col-md-9 col-md-offset-2">
-                  <strong>错误!</strong>
+                  <strong>warning!</strong>
                   <ul>
                     @foreach ($errors->all() as $error)
                       <li>{{ $error }}</li>

@@ -13,7 +13,6 @@ class GetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     public function getArticles($serial, $num = 10)

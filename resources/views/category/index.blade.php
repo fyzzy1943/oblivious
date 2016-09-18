@@ -8,6 +8,16 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      @if (session('info'))
+        <div class="alert alert-info col-md-8 col-md-offset-2">
+          <strong>提示!</strong>
+          <ul>
+            @foreach (session('info') as $i)
+              <li>{{ $i }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
       <table id="table_id" class="row-border">
         <thead>
         <tr>
@@ -23,7 +33,10 @@
             <td>{{$category->first}}</td>
             <td>{{$category->second}}</td>
             <td>{{$category->serial}}</td>
-            <td>修改|删除</td>
+            <td>
+              <a href="/system/category/{{$category->id}}/edit">修改</a>
+              |
+              <a href="/system/category/{{$category->id}}">删除</a></td>
           </tr>
         @endforeach
         </tbody>

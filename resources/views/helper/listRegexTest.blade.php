@@ -12,7 +12,7 @@
         <div class="panel-body">
           @if(count($errors) > 0)
             <div class="alert alert-warning col-md-8 col-md-offset-2">
-              <strong>错误!</strong>
+              <strong>warning!</strong>
               <ul>
                 @foreach ($errors->all() as $error)
                   <li>{{ $error }}</li>
@@ -33,7 +33,7 @@
               <textarea class="form-control" name="list_regex" placeholder="列表抓取正则">{{old('list_regex')}}</textarea>
             </div>
             <div class="form-group">
-              <textarea class="form-control" placeholder="抓取结果" rows="5" readonly>{{$result or ''}}</textarea>
+              <textarea class="form-control" placeholder="抓取结果" rows="5" readonly>{{ $result or '' }}</textarea>
             </div>
             <div class="form-group">
               <button class="btn btn-primary pull-right">测试</button>
