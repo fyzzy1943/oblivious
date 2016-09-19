@@ -35,9 +35,9 @@
             <td>{{ltrim($article->date, '发布时间：')}}</td>
             <td>{{$article->created_at}}</td>
             <td>
-              <a href="/system/category/{{$article->id}}/edit">修改</a>
+              <a href="/system/articles/{{$article->id}}/edit">修改</a>
               |
-              <a href="/system/category/{{$article->id}}">删除</a>
+              <a href="/system/articles/{{$article->id}}">删除</a>
             </td>
           </tr>
         @endforeach
