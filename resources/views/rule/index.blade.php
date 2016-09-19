@@ -25,7 +25,7 @@
               <td>{{$rule->category->second}}</td>
               <td>{{$rule->url}}</td>
               <td>{{$rule->serial}}</td>
-              <td>修改|删除</td>
+              <td>详情|修改|删除</td>
             </tr>
           @endforeach
           </tbody>

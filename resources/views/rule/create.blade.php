@@ -9,12 +9,13 @@
             添加更新规则
           </div>
           <div class="panel-body">
-            <form class="form-horizontal" action="/rules" method="POST">
+            <form class="form-horizontal" action="/system/rules" method="POST">
               {{csrf_field()}}
+
               <div class="form-group">
                 <label for="serial" class="col-sm-2 control-label">序列号</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="serial" name="serial" value="{{old('serial')}}">
+                  <input type="text" class="form-control" id="serial" name="serial" value="{{old('serial', $serial)}}">
                 </div>
               </div>
               <div class="form-group">

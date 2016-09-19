@@ -30,6 +30,7 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::put('category/{id}', 'CategoryController@update');
 
     Route::resource('rules', 'RuleController');
+    Route::get('rules/create/{serial}', 'RuleController@create');
 });
 
 Route::group(['prefix' => 'get'], function () {
@@ -41,9 +42,11 @@ Route::group(['prefix' => 'get'], function () {
 Route::group(['prefix' => 'helper'], function () {
     Route::get('regex/list', 'HelperController@showListRegexForm');
     Route::post('regex/list', 'HelperController@testListRegex');
+    Route::get('regex/article', 'HelperController@showArticleRegexForm');
+    Route::post('regex/article', 'HelperController@testArticleRegex');
 });
 
-Route::get('article/update/{serial?}', 'UpdateController@makeArticle');
+Route::get('update/{serial?}', 'UpdateController@update');
 
 Route::get('phpinfo', function () {
     return phpinfo();

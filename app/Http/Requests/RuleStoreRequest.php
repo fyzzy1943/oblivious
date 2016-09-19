@@ -24,7 +24,7 @@ class RuleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'serial' => 'require|unique'
+            'serial' => 'required|unique:update_rules,serial',
         ];
     }
 

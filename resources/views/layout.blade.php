@@ -64,6 +64,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a href="/helper/regex/list">列表正则测试</a></li>
+            <li><a href="/helper/regex/article">文章正则测试</a></li>
           </ul>
         </li>
         <li><a href="#">#</a></li>

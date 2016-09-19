@@ -36,7 +36,10 @@
             <td>
               <a href="/system/category/{{$category->id}}/edit">修改</a>
               |
-              <a href="/system/category/{{$category->id}}">删除</a></td>
+              <a href="/system/category/{{$category->id}}">删除</a>
+              |
+              <a href="/system/rules/create/{{$category->serial}}">添加规则</a>
+            </td>
           </tr>
         @endforeach
         </tbody>
