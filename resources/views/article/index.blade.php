@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -18,31 +19,25 @@
           </ul>
         </div>
       @endif
-      <table id="table_id" class="table table-bordered table-hover">
+      <table id="table_id" class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th>一级类别</th>
-          <th>二级类别</th>
-          <th>序列号</th>
+          <th>标题</th>
+          <th>日期</th>
+          <th>更新时间</th>
           <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($categories as $category)
+        @foreach($articles as $article)
           <tr>
-            <td>{{$category->first}}</td>
-            <td>{{$category->second}}</td>
-            <td>{{$category->serial}}</td>
+            <td>{{$article->title}}</td>
+            <td>{{ltrim($article->date, '发布时间：')}}</td>
+            <td>{{$article->created_at}}</td>
             <td>
-              <a href="/system/category/{{$category->id}}/edit">修改</a>
+              <a href="/system/category/{{$article->id}}/edit">修改</a>
               |
-              <a href="/system/category/{{$category->id}}">删除</a>
-              |
-              <a href="/system/rules/create/{{$category->serial}}/{{$category->first}}/{{$category->second}}">规则</a>
-              |
-              <a href="/system/articles/serial/{{$category->serial}}">文章</a>
-              |
-              <a href="">更新</a>
+              <a href="/system/category/{{$article->id}}">删除</a>
             </td>
           </tr>
         @endforeach

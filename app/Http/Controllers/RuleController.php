@@ -26,9 +26,15 @@ class RuleController extends Controller
         return view('rule.index')->with('rules', UpdateRule::all());
     }
 
-    public function create($serial='')
+    public function create($serial='', $first='', $second='')
     {
-        return view('rule.create')->with('serial', $serial);
+        $rule = UpdateRule::where('serial', $serial)->first();
+        if (null == $rule) {
+            return view('rule.create')->with(compact('serial', 'first', 'second'));
+        } else {
+            return view('rule.edit')->with('rule', $rule);
+        }
+
     }
 
     /**
@@ -76,7 +82,10 @@ class RuleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = new UpdateRule($request->all());
+        $rule->id = $id;
+
+        dd($rule->toArray());
     }
 
     /**

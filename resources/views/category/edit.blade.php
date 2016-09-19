@@ -37,7 +37,8 @@
               @endif
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default">确定</button>
+                  <button type="submit" class="btn btn-primary">确定</button>
+                  <a href="/system/category" class="btn btn-default">返回</a>
                 </div>
               </div>
             </form>

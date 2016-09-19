@@ -55,7 +55,7 @@
             <li><a href="/system/rules">更新控制列表</a></li>
             <li><a href="/system/rules/create">添加更新控制</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/system/update/article">所有文章</a></li>
+            <li><a href="/system/articles">所有文章</a></li>
           </ul>
         </li>
         <li class="dropdown">

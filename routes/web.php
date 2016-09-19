@@ -30,7 +30,10 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::put('category/{id}', 'CategoryController@update');
 
     Route::resource('rules', 'RuleController');
-    Route::get('rules/create/{serial}', 'RuleController@create');
+    Route::get('rules/create/{serial?}/{first?}/{second?}', 'RuleController@create');
+
+    Route::resource('articles', 'ArticleController');
+    Route::get('articles/serial/{serial}', 'ArticleController@index');
 });
 
 Route::group(['prefix' => 'get'], function () {
