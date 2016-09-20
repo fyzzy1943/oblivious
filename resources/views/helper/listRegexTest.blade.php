@@ -24,6 +24,9 @@
             {{csrf_field()}}
 
             <div class="form-group">
+              <textarea class="form-control" name="url" placeholder="url">{{old('url')}}</textarea>
+            </div>
+            <div class="form-group">
               <textarea class="form-control" name="html" placeholder="html源代码" rows="5">{{old('html')}}</textarea>
             </div>
             <div class="form-group">

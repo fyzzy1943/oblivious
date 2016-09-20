@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\url;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -13,13 +14,18 @@ class HelperController extends Controller
         return view('helper.listRegexTest');
     }
 
-    public function testListRegex(Request $request)
+    public function testListRegex(Request $request, url $helper)
     {
         $request->flash();
 
+        $url = $request->input('url');
         $html = $request->input('html');
         $area_regex = $request->input('area_regex');
         $list_regex = $request->input('list_regex');
+
+        if (empty($url)) {
+            return view('helper.listRegexTest')->withErrors('请输入url');
+        }
 
         if (empty($html)) {
             return view('helper.listRegexTest')->withErrors('请输入源代码');
@@ -45,6 +51,10 @@ class HelperController extends Controller
         if (empty($html)) {
             return view('helper.listRegexTest')->withErrors('列表无匹配');
         }
+
+        $html = array_map(function ($item) use ($helper, $url) {
+            return $helper->getFullUrl($url, $item);
+        }, $html);
 
         $html = implode(PHP_EOL, $html);
 
@@ -74,13 +84,13 @@ class HelperController extends Controller
             return view('helper.articleRegexTest')->with('result', $html);
         }
         preg_match($area_regex, $html, $result);
-        $html = $result[1] ?? '';
+        $area = $result[1] ?? '';
         if (empty($html)) {
             return view('helper.articleRegexTest')->withErrors('区域无匹配');
         }
 
         if (empty($title_regex)) {
-            return view('helper.articleRegexTest')->with('result', trim($html));
+            return view('helper.articleRegexTest')->with('result', trim($area));
         }
         preg_match($title_regex, $area, $result);
         $html = $result[1] ?? '';

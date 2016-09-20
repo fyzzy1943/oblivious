@@ -42,7 +42,7 @@
               |
               <a href="/system/articles/serial/{{$category->serial}}">文章</a>
               |
-              <a href="">更新</a>
+              <a href="/update/{{$category->serial}}">更新</a>
             </td>
           </tr>
         @endforeach

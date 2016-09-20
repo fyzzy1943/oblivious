@@ -31,7 +31,7 @@ class UpdateController extends Controller
         set_time_limit(0);
         header('X-Accel-Buffering: no');
 
-        echo '<pre>开始更新[' . $serial . ']', PHP_EOL;
+        echo '<pre>开始更新【' . $serial . '】', PHP_EOL;
         @ob_flush(); @flush();
 
         $rule = UpdateRule::where('serial', $serial)->first();
@@ -48,6 +48,7 @@ class UpdateController extends Controller
 
         // 获取列表页面
         $html = curl_exec($ch);
+        $html = mb_convert_encoding($html, 'utf-8', 'GBK, UTF-8, ASCII');
 
         // 获取内容页面URL列表
         preg_match($rule->url_area, $html, $match);
@@ -58,12 +59,13 @@ class UpdateController extends Controller
             return $helper->getFullUrl($rule->url, $url);
         }, $urls[1]);
 
-        echo '文章url组合完毕, 本次预计更新' . count($urls) . '条', PHP_EOL;
+        echo '文章url组合完毕, 本次预计更新【' . count($urls) . '】条', PHP_EOL;
         @ob_flush(); @flush();
 
         foreach (array_reverse($urls) as $url) {
             curl_setopt($ch, CURLOPT_URL, $url);
             $html = curl_exec($ch);
+            $html = mb_convert_encoding($html, 'utf-8', 'GBK, UTF-8, ASCII');
 
             // 获取内容区域
             preg_match($rule->content_area, $html, $match);
@@ -74,11 +76,11 @@ class UpdateController extends Controller
             preg_match($rule->title_rule, $match[1], $title);
             $title = trim($title[1]);
 
-            echo '开始更新"' . $title . '"', PHP_EOL;
+            echo '开始更新【' . $title . '】', PHP_EOL;
             @ob_flush(); @flush();
 
             if (Article::where('title', $title)->first() != null) {
-                echo '"' . $title . '"已经存在，自动略过', PHP_EOL;
+                echo '【' . $title . '】已经存在，自动略过', PHP_EOL;
                 @ob_flush(); @flush();
                 continue;
             }
@@ -128,11 +130,14 @@ class UpdateController extends Controller
             $ar->date = $date;
             $ar->article = $article;
             $ar->save();
+
+            echo '文章【' . $title . '】更新成功', PHP_EOL;
+            @ob_flush(); @flush();
         }
 
         curl_close($ch);
 
-        echo '专栏"' . $serial . '"更新完成', PHP_EOL;
+        echo '专栏【' . $serial . '】更新完成', PHP_EOL;
         @ob_flush(); @flush();
 
         return 0;
