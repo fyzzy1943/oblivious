@@ -41,13 +41,13 @@
             系统管理 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#">人员列表</a></li>
+            <li><a href="/system/users">人员列表</a></li>
             <li><a href="/system/users/create">添加用户</a></li>
           </ul>
         </li>
-        <li class="dropdown @if (Request::is('system/*')) active @endif">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            系统管理 <span class="caret"></span>
+            更新管理 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li><a href="/system/category">类别列表</a></li>

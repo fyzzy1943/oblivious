@@ -60,10 +60,10 @@
                 <div class="radio">
                   <label>
                     <input type="radio" name="role" value="regex" @if ('regex'==old('role')) checked @endif>
-                    抓取规则管理员
+                    更新管理员
                   </label>
                 </div>
-                <div class="radio disabled">
+                <div class="radio">
                   <label>
                     <input type="radio" name="role" value="admin" @if ('admin'==old('role')) checked @endif>
                     管理员

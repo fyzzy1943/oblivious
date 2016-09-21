@@ -26,4 +26,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected function getRoleAttribute($value)
+    {
+        $map = [
+            'user' => '普通用户',
+            'admin' => '管理员',
+            'regex' => '更新管理员',
+        ];
+
+        return $map[$value] ?? $value;
+    }
 }

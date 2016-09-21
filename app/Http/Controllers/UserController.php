@@ -14,9 +14,9 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function showList()
+    public function index()
     {
-
+        return view('user.index')->with('users', User::all());
     }
 
     public function create()
@@ -28,6 +28,18 @@ class UserController extends Controller
     {
         $user = new User($request->all());
 
-        dd($user);
+        $user->password = bcrypt($user->password);
+        $user->email = '';
+
+        $user->save();
+
+        return redirect('system/users')->with('info', [$user->name . '添加成功']);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect('system/users')->with('info', [$user->name . '已经删除']);
     }
 }

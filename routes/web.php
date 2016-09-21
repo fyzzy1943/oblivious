@@ -20,9 +20,10 @@ Route::post('logout', 'Auth\LoginController@logout');
 Route::get('home', 'HomeController@index');
 
 Route::group(['as' => 'system', 'prefix' => 'system'], function () {
-    Route::get('users', 'UserController@showList');
+    Route::get('users', 'UserController@index');
     Route::get('users/create', 'UserController@create');
     Route::post('users', 'UserController@store');
+    Route::delete('users/{user}', 'UserController@destroy');
 
     Route::get('category', 'CategoryController@showCategoryList');
     Route::get('category/create', 'CategoryController@showCategoryCreateForm');
@@ -53,5 +54,6 @@ Route::group(['prefix' => 'helper'], function () {
 Route::get('update/{serial?}', 'UpdateController@update');
 
 Route::get('phpinfo', function () {
+    dd(url('system/users'));
     return phpinfo();
 });
