@@ -17,11 +17,12 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout');
 
-Route::get('/home', 'HomeController@index');
+Route::get('home', 'HomeController@index');
 
 Route::group(['as' => 'system', 'prefix' => 'system'], function () {
-    Route::get('/user', 'UserController@showList');
-    Route::get('/user/add', 'UserController@showCreateForm');
+    Route::get('users', 'UserController@showList');
+    Route::get('users/create', 'UserController@create');
+    Route::post('users', 'UserController@store');
 
     Route::get('category', 'CategoryController@showCategoryList');
     Route::get('category/create', 'CategoryController@showCategoryCreateForm');

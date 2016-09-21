@@ -42,6 +42,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a href="#">人员列表</a></li>
+            <li><a href="/system/users/create">添加用户</a></li>
           </ul>
         </li>
         <li class="dropdown @if (Request::is('system/*')) active @endif">
