@@ -51,6 +51,10 @@ Route::group(['prefix' => 'helper'], function () {
     Route::post('regex/article', 'HelperController@testArticleRegex');
 });
 
+Route::group(['prefix' => 'regex'], function () {
+    Route::post('article/area_test', 'HelperController@articleAreaText');
+});
+
 Route::get('update/{serial?}', 'UpdateController@update');
 
 Route::get('phpinfo', function () {

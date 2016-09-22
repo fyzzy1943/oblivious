@@ -25,7 +25,13 @@
               <td>{{$rule->category->second}}</td>
               <td>{{$rule->url}}</td>
               <td>{{$rule->serial}}</td>
-              <td>详情|修改|删除</td>
+              <td>
+                <a href="/system/rules/{{$rule->id}}">详情</a>
+                |
+                <a href="/system/rules/{{$rule->id}}/edit">修改</a>
+                |
+                删除
+              </td>
             </tr>
           @endforeach
           </tbody>
@@ -39,8 +45,8 @@
 @section('script')
   <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
   <script>
-    $(document).ready( function () {
+    $(document).ready(function () {
       $('#table_id').DataTable();
-    } );
+    });
   </script>
 @endsection

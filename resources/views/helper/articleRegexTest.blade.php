@@ -20,35 +20,58 @@
                 </ul>
               </div>
             @endif
-            <form method="post" action="/helper/regex/article">
-              {{csrf_field()}}
-
-              <div class="form-group">
-                <textarea class="form-control" name="html" placeholder="html源代码" rows="5">{{old('html')}}</textarea>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <textarea class="form-control" id="html_code" rows="3" placeholder="文章页源代码"></textarea>
+                </div>
+                <div class="form-group">
+                  <input class="form-control" id="area_regex" placeholder="文章区域正则">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" id="title_regex" placeholder="标题正则">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" id="date_regex" placeholder="日期正则">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" id="text_regex" placeholder="正文正则">
+                </div>
               </div>
-              <div class="form-group">
-                <textarea class="form-control" name="area_regex" placeholder="区域正则">{{old('area_regex')}}</textarea>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <textarea class="form-control" id="area_code" rows="5" placeholder="区域源代码"></textarea>
+                </div>
+                <button type="button" class="btn btn-default" id="area_test">区域测试</button>
               </div>
-              <div class="form-group">
-                <textarea class="form-control" name="title_regex" placeholder="标题">{{old('title_regex')}}</textarea>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" name="date_regex" placeholder="日期">{{old('date_regex')}}</textarea>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" name="text_regex" placeholder="正文">{{old('text_regex')}}</textarea>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" placeholder="抓取结果" rows="5" readonly>{{ $result or '' }}</textarea>
-              </div>
-              <div class="form-group">
-                <button class="btn btn-primary pull-right">测试</button>
-              </div>
-            </form>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" id="result" placeholder="结果"></textarea>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+@endsection
+
+@section('script')
+<script>
+  $(document).ready(function () {
+    $('#area_test').click(function(){
+      $.post('/regex/article/area_test', {
+        _token: '{{csrf_token()}}',
+        html: $('#html_code').val(),
+        regex: $('#area_regex').val()
+      }, function(data, status){
+        if (data.message == 'success') {
+          $('#area_code').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+  });
+</script>
 @endsection

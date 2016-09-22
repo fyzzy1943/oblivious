@@ -6,6 +6,7 @@ use App\Helper\url;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use League\Flysystem\Exception;
 
 class HelperController extends Controller
 {
@@ -90,7 +91,7 @@ class HelperController extends Controller
         }
 
         if (empty($title_regex)) {
-            return view('helper.articleRegexTest')->with('result', trim($area));
+            return view('helper.articleRegexTest')->with('result', trim($area))->with('a', '&nbsp;');
         }
         preg_match($title_regex, $area, $result);
         $html = $result[1] ?? '';
@@ -117,5 +118,19 @@ class HelperController extends Controller
         }
 
         return view('helper.articleRegexTest')->with('result', $html);
+    }
+
+    public function articleAreaText(Request $request)
+    {
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match($regex, $html, $result);
+
+        if (isset($result[1])) {
+            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        } else {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
     }
 }

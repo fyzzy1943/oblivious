@@ -16,7 +16,7 @@ class CategoryController extends Controller
 
     public function showCategoryList()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('id', 'desc')->get();
 
         return view('category.index')->with('categories', $categories);
     }

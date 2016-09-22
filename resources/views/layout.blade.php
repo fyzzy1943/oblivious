@@ -36,15 +36,18 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            系统管理 <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="/system/users">人员列表</a></li>
-            <li><a href="/system/users/create">添加用户</a></li>
-          </ul>
-        </li>
+        @if(check_value(Auth::user()->role, 'admin|super_admin'))
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              系统管理 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/system/users">用户列表</a></li>
+              <li><a href="/system/users/create">添加用户</a></li>
+            </ul>
+          </li>
+        @endif
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             更新管理 <span class="caret"></span>

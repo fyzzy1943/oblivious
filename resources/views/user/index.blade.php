@@ -37,7 +37,7 @@
             <td>{{$user->nickname}}</td>
             <td>{{$user->name}}</td>
             <td>{{$user->email}}</td>
-            <td>{{$user->role}}</td>
+            <td>{{$user->n_role}}</td>
             <td>
               <a href="/system/users/{{$user->id}}/edit">修改</a>
               |

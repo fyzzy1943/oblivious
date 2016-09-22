@@ -27,7 +27,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected function getRoleAttribute($value)
+    protected function getNRoleAttribute($value)
     {
         $map = [
             'user' => '普通用户',
@@ -35,6 +35,6 @@ class User extends Authenticatable
             'regex' => '更新管理员',
         ];
 
-        return $map[$value] ?? $value;
+        return $map[$this->role ?? 'user'] ?? $this->role;
     }
 }
