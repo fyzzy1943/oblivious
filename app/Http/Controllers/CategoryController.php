@@ -26,7 +26,7 @@ class CategoryController extends Controller
         return view('category.create');
     }
 
-    public function storeCategory(Requests\CategoryStoreRequest $request)
+    public function store(Requests\CategoryStoreRequest $request)
     {
         $category = new Category($request->all());
         $category->serial = '';

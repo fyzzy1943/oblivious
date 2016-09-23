@@ -56,9 +56,6 @@
             <li><a href="/system/category">类别列表</a></li>
             <li><a href="/system/category/create">添加类别</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/system/rules">更新控制列表</a></li>
-            <li><a href="/system/rules/create">添加更新控制</a></li>
-            <li role="separator" class="divider"></li>
             <li><a href="/system/articles">所有文章</a></li>
           </ul>
         </li>
@@ -67,8 +64,8 @@
             辅助工具 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/helper/regex/list">列表正则测试</a></li>
-            <li><a href="/helper/regex/article">文章正则测试</a></li>
+            <li><a href="{{url('regex/list')}}">列表正则测试</a></li>
+            <li><a href="{{url('regex/article')}}">文章正则测试</a></li>
           </ul>
         </li>
         <li><a href="#">#</a></li>

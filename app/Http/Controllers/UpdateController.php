@@ -15,6 +15,9 @@ class UpdateController extends Controller
 {
     public function update($serial = '*')
     {
+        set_time_limit(0);
+        header('X-Accel-Buffering: no');
+
         if ($serial == '*') {
 
         } else {
@@ -28,9 +31,6 @@ class UpdateController extends Controller
             return null;
         }
 
-        set_time_limit(0);
-        header('X-Accel-Buffering: no');
-
         echo '<pre>开始更新【' . $serial . '】', PHP_EOL;
         @ob_flush(); @flush();
 
@@ -41,10 +41,12 @@ class UpdateController extends Controller
         $domain = $helper->getDomain($rule->url);
 
         $ch = curl_init();
+        $ch_img = curl_init();
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $rule->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
+        curl_setopt($ch_img, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
 
         // 获取列表页面
         $html = curl_exec($ch);
@@ -88,6 +90,7 @@ class UpdateController extends Controller
             // 获取日期
             preg_match($rule->date_rule, $match[1], $date);
             $date = '发布时间：' . trim($date[1]);
+
             // 获取文章
             preg_match($rule->article_rule, $match[1], $article);
             $article = $this->processArticle($article[1], $images);
@@ -104,14 +107,14 @@ class UpdateController extends Controller
 
             // 下载图片
             foreach ($images as $key => $val) {
-                curl_setopt($ch, CURLOPT_URL, $val);
-                curl_setopt($ch, CURLOPT_VERBOSE, 1);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_AUTOREFERER, false);
-                curl_setopt($ch, CURLOPT_REFERER, $url);
-                curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                $result = curl_exec($ch);
+                curl_setopt($ch_img, CURLOPT_URL, $val);
+                curl_setopt($ch_img, CURLOPT_VERBOSE, 1);
+                curl_setopt($ch_img, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch_img, CURLOPT_AUTOREFERER, false);
+                curl_setopt($ch_img, CURLOPT_REFERER, $url);
+                curl_setopt($ch_img, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                curl_setopt($ch_img, CURLOPT_HEADER, 0);
+                $result = curl_exec($ch_img);
                 $path = date("Ymd").'/'.$key;
                 Storage::put($path, $result);
 
@@ -135,6 +138,7 @@ class UpdateController extends Controller
             @ob_flush(); @flush();
         }
 
+        curl_close($ch_img);
         curl_close($ch);
 
         echo '专栏【' . $serial . '】更新完成', PHP_EOL;
@@ -188,6 +192,7 @@ class UpdateController extends Controller
             }
         }
 
+        // 处理图片
         preg_match_all('/<img[^>]*?src[^>]*?>/i', $article, $matches);
         foreach ($matches[0] as $match) {
             preg_match('/\bsrc=["\']([^"^\']*?)["\']/i', $match, $tmp);

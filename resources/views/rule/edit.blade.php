@@ -16,7 +16,7 @@
               <div class="form-group">
                 <label for="serial" class="col-sm-2 control-label">序列号</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="serial" name="serial" value="{{$rule->serial}}">
+                  <input type="text" class="form-control" id="serial" name="serial" value="{{$rule->serial}}" readonly>
                 </div>
               </div>
               <div class="form-group">

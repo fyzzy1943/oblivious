@@ -27,7 +27,7 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
 
     Route::get('category', 'CategoryController@showCategoryList');
     Route::get('category/create', 'CategoryController@showCategoryCreateForm');
-    Route::post('category', 'CategoryController@storeCategory');
+    Route::post('category', 'CategoryController@store');
     Route::get('category/{id}/edit', 'CategoryController@edit');
     Route::put('category/{id}', 'CategoryController@update');
 
@@ -44,14 +44,9 @@ Route::group(['prefix' => 'get'], function () {
     Route::get('title/{title}/{isShadow}', 'GetController@getTitle');
 });
 
-Route::group(['prefix' => 'helper'], function () {
-    Route::get('regex/list', 'HelperController@showListRegexForm');
-    Route::post('regex/list', 'HelperController@testListRegex');
-    Route::get('regex/article', 'HelperController@showArticleRegexForm');
-    Route::post('regex/article', 'HelperController@testArticleRegex');
-});
-
 Route::group(['prefix' => 'regex'], function () {
+    Route::get('list', 'HelperController@showListRegexForm');
+    Route::get('article', 'HelperController@showArticleRegexForm');
     Route::post('article/area_test', 'HelperController@articleAreaTest');
     Route::post('article/title_test', 'HelperController@articleTitleTest');
     Route::post('article/date_test', 'HelperController@articleDateTest');
@@ -62,7 +57,10 @@ Route::group(['prefix' => 'regex'], function () {
 
 Route::get('update/{serial?}', 'UpdateController@update');
 
-Route::get('phpinfo', function () {
+Route::get('phpinfo/{st}', function ($st) {
+    dd(str_plural($st));
     dd(url('system/users'));
     return phpinfo();
 });
+
+

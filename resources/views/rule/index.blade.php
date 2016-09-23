@@ -8,6 +8,18 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
+        @if (session('info'))
+          <div class="row">
+            <div class="alert alert-info col-md-8 col-md-offset-2">
+              <strong>提示!</strong>
+              <ul>
+                @foreach (session('info') as $i)
+                  <li>{{ $i }}</li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+        @endif
         <table id="table_id" class="row-border">
           <thead>
           <tr>

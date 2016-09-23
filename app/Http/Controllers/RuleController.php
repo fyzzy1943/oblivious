@@ -45,10 +45,13 @@ class RuleController extends Controller
      */
     public function store(Requests\RuleStoreRequest $request)
     {
-        $ur = new UpdateRule($request->all());
-        $ur->save();
+        $regex_area = explode(PHP_EOL, $request->input('regex_area'));
+        dd($regex_area, $request->all());
 
-        return redirect('system/rules');
+//        $ur = new UpdateRule($request->all());
+//        $ur->save();
+//
+//        return redirect('system/category');
     }
 
     /**
@@ -76,10 +79,19 @@ class RuleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rule = new UpdateRule($request->all());
-        $rule->id = $id;
+        $rule = UpdateRule::find($id);
 
-        dd($rule->toArray());
+        $rule->url = $request->input('url');
+        $rule->url_area = $request->input('url_area');
+        $rule->url_rule = $request->input('url_rule');
+        $rule->content_area = $request->input('content_area');
+        $rule->title_rule = $request->input('title_rule');
+        $rule->date_rule = $request->input('date_rule');
+        $rule->article_rule = $request->input('article_rule');
+
+        $rule->save();
+
+        return redirect('system/rules')->with('info', ['修改成功']);
     }
 
     /**
