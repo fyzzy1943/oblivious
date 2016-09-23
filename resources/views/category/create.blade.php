@@ -14,7 +14,7 @@
               <div class="form-group">
                 <label for="first" class="col-sm-2 control-label">一级类别</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="first" name="first" value="{{old('first')}}">
+                  <input type="text" class="form-control" id="first" name="first" value="{{htmlspecialchars(old('first'))}}">
                 </div>
               </div>
               <div class="form-group">
