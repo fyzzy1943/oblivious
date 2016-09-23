@@ -81,7 +81,6 @@ class GetController extends Controller
         }
         $image->drawImage($line);
 
-        return response($image->getImageBlob())
-            ->header('Content-Type', 'image/png');
+        return response()->pngImage($image->getImageBlob());
     }
 }

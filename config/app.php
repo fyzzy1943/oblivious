@@ -182,6 +182,7 @@ return [
          * My Service Providers...
          */
 //        App\Providers\IProvider::class,
+        App\Providers\ResponseImageServiceProvider::class,
 
     ],
 

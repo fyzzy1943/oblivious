@@ -52,7 +52,12 @@ Route::group(['prefix' => 'helper'], function () {
 });
 
 Route::group(['prefix' => 'regex'], function () {
-    Route::post('article/area_test', 'HelperController@articleAreaText');
+    Route::post('article/area_test', 'HelperController@articleAreaTest');
+    Route::post('article/title_test', 'HelperController@articleTitleTest');
+    Route::post('article/date_test', 'HelperController@articleDateTest');
+    Route::post('article/text_test', 'HelperController@articleTextTest');
+    Route::post('list/area_test', 'HelperController@listAreaTest');
+    Route::post('list/list_test', 'HelperController@listListTest');
 });
 
 Route::get('update/{serial?}', 'UpdateController@update');

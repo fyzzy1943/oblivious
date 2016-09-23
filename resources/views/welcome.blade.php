@@ -22,7 +22,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">内容更新管理系统</div>
         <div class="panel-body">
-          <form action="{{url('/login')}}" method="POST" class="form-horizontal">
+          <form action="{{url('login')}}" method="POST" class="form-horizontal">
             {{csrf_field()}}
 
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

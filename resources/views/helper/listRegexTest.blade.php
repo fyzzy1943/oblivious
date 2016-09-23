@@ -20,32 +20,74 @@
               </ul>
             </div>
           @endif
-          <form method="post" action="/helper/regex/list">
-            {{csrf_field()}}
+          <div class="col-md-6">
 
             <div class="form-group">
-              <textarea class="form-control" name="url" placeholder="url">{{old('url')}}</textarea>
+              <input type="text" class="form-control" id="url" placeholder="网址">
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="html" placeholder="html源代码" rows="5">{{old('html')}}</textarea>
+              <textarea class="form-control" id="html_code" placeholder="html源代码" rows="10"></textarea>
+            </div>
+            <div class="form-group input-group">
+              <input type="text" class="form-control" id="area_regex" placeholder="区域正则">
+              <span class="input-group-btn">
+                <button class="btn btn-default" id="area_test" type="button">区域测试</button>
+              </span>
+            </div>
+            <div class="form-group input-group">
+              <input type="text" class="form-control" id="list_regex" placeholder="列表正则">
+              <span class="input-group-btn">
+                <button class="btn btn-default" id="list_test" type="button">列表测试</button>
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <textarea class="form-control" id="area_code" placeholder="区域结果" rows="8" readonly></textarea>
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="area_regex" placeholder="区域正则">{{old('area_regex')}}</textarea>
+              <textarea class="form-control" id="list_result" placeholder="列表结果" rows="8" readonly></textarea>
             </div>
-            <div class="form-group">
-              <textarea class="form-control" name="list_regex" placeholder="列表抓取正则">{{old('list_regex')}}</textarea>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" placeholder="抓取结果" rows="5" readonly>{{ $result or '' }}</textarea>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary pull-right">测试</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+@endsection
+
+@section('script')
+<script>
+  $(document).ready(function () {
+    $('#area_test').click(function () {
+      $.post('{{url('regex/list/area_test')}}', {
+        _token: '{{csrf_token()}}',
+        html: $('#html_code').val(),
+        regex: $('#area_regex').val()
+      }, function (data, status) {
+        if (data.message == 'success') {
+          $('#area_code').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+
+    $('#list_test').click(function () {
+      $.post('{{url('regex/list/list_test')}}', {
+        _token: '{{csrf_token()}}',
+        url: $('#url').val(),
+        html: $('#area_code').val(),
+        regex: $('#list_regex').val()
+      }, function (data, status) {
+        if (data.message == 'success') {
+          $('#list_result').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+  });
+</script>
 @endsection

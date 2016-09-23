@@ -23,10 +23,10 @@
             <div class="row">
               <div class="col-md-8">
                 <div class="form-group">
-                  <textarea class="form-control" id="html_code" rows="3" placeholder="文章页源代码"></textarea>
+                  <textarea class="form-control" id="html_code" rows="5" placeholder="源代码" autofocus></textarea>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" id="area_regex" placeholder="文章区域正则">
+                  <input class="form-control" id="area_regex" placeholder="区域正则">
                 </div>
                 <div class="form-group">
                   <input class="form-control" id="title_regex" placeholder="标题正则">
@@ -40,13 +40,20 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <textarea class="form-control" id="area_code" rows="5" placeholder="区域源代码"></textarea>
+                  <textarea class="form-control" id="area_code" rows="9" placeholder="区域源代码" readonly></textarea>
                 </div>
-                <button type="button" class="btn btn-default" id="area_test">区域测试</button>
+                <div class="form-group">
+                  <button type="button" class="btn btn-default" id="area_test">区域测试</button>
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-default" id="title_test">标题测试</button>
+                  <button type="button" class="btn btn-default" id="date_test">日期测试</button>
+                  <button type="button" class="btn btn-default" id="text_test">正文测试</button>
+                </div>
               </div>
             </div>
             <div class="form-group">
-              <textarea class="form-control" id="result" placeholder="结果"></textarea>
+              <textarea class="form-control" id="result" rows="7" placeholder="结果" readonly></textarea>
             </div>
           </div>
         </div>
@@ -60,13 +67,55 @@
 <script>
   $(document).ready(function () {
     $('#area_test').click(function(){
-      $.post('/regex/article/area_test', {
+      $.post('{{url('regex/article/area_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#html_code').val(),
         regex: $('#area_regex').val()
       }, function(data, status){
         if (data.message == 'success') {
           $('#area_code').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+
+    $('#title_test').click(function(){
+      $.post('{{url('regex/article/title_test')}}', {
+        _token: '{{csrf_token()}}',
+        html: $('#area_code').val(),
+        regex: $('#title_regex').val()
+      }, function(data, status){
+        if (data.message == 'success') {
+          $('#result').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+
+    $('#date_test').click(function(){
+      $.post('{{url('regex/article/date_test')}}', {
+        _token: '{{csrf_token()}}',
+        html: $('#area_code').val(),
+        regex: $('#date_regex').val()
+      }, function(data, status){
+        if (data.message == 'success') {
+          $('#result').val(data.result);
+        } else {
+          alert(data.message);
+        }
+      }, 'json');
+    });
+
+    $('#text_test').click(function(){
+      $.post('{{url('regex/article/text_test')}}', {
+        _token: '{{csrf_token()}}',
+        html: $('#area_code').val(),
+        regex: $('#text_regex').val()
+      }, function(data, status){
+        if (data.message == 'success') {
+          $('#result').val(data.result);
         } else {
           alert(data.message);
         }

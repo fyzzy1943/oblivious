@@ -120,7 +120,7 @@ class HelperController extends Controller
         return view('helper.articleRegexTest')->with('result', $html);
     }
 
-    public function articleAreaText(Request $request)
+    public function articleAreaTest(Request $request)
     {
         $html = $request->input('html');
         $regex = $request->input('regex');
@@ -132,5 +132,83 @@ class HelperController extends Controller
         } else {
             return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
         }
+    }
+
+    public function articleTitleTest(Request $request)
+    {
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match($regex, $html, $result);
+
+        if (isset($result[1])) {
+            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        } else {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
+    }
+
+    public function articleDateTest(Request $request)
+    {
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match($regex, $html, $result);
+
+        if (isset($result[1])) {
+            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        } else {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
+    }
+
+    public function articleTextTest(Request $request)
+    {
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match($regex, $html, $result);
+
+        if (isset($result[1])) {
+            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        } else {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
+    }
+
+    public function listAreaTest(Request $request)
+    {
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match($regex, $html, $result);
+
+        if (isset($result[1])) {
+            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        } else {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
+    }
+
+    public function listListTest(Request $request, url $helper)
+    {
+        $url = $request->input('url');
+        $html = $request->input('html');
+        $regex = $request->input('regex');
+
+        preg_match_all($regex, $html, $result);
+
+        $html = $result[1] ?? '';
+        if (empty($html)) {
+            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+        }
+
+        $html = array_map(function ($item) use ($helper, $url) {
+            return $helper->getFullUrl($url, $item);
+        }, $html);
+
+        $html = implode(PHP_EOL, $html);
+
+        return response()->json(['message'=>'success', 'result'=>$html]);
     }
 }

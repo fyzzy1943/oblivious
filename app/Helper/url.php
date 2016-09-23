@@ -25,6 +25,9 @@ class url
     public function getFullUrl($part1, $part2)
     {
 //        dd(hash('sha1', uniqid()));
+        if (empty($part1)) {
+            return $part2;
+        }
         if ($part2[0] == '/') {
             return $this->getDomain($part1) . $part2;
         }
