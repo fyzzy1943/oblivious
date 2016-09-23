@@ -29,12 +29,12 @@ class RuleController extends Controller
     public function create($serial='', $first='', $second='')
     {
         $rule = UpdateRule::where('serial', $serial)->first();
+
         if (null == $rule) {
             return view('rule.create')->with(compact('serial', 'first', 'second'));
         } else {
-            return view('rule.edit')->with('rule', $rule);
+            return view('rule.edit')->with($rule->toArray())->with(compact('first', 'second'));
         }
-
     }
 
     /**
@@ -45,13 +45,10 @@ class RuleController extends Controller
      */
     public function store(Requests\RuleStoreRequest $request)
     {
-        $regex_area = explode(PHP_EOL, $request->input('regex_area'));
-        dd($regex_area, $request->all());
+        $ur = new UpdateRule($request->all());
+        $ur->save();
 
-//        $ur = new UpdateRule($request->all());
-//        $ur->save();
-//
-//        return redirect('system/category');
+        return redirect('system/category')->with('info', ['添加成功']);
     }
 
     /**
@@ -91,7 +88,7 @@ class RuleController extends Controller
 
         $rule->save();
 
-        return redirect('system/rules')->with('info', ['修改成功']);
+        return redirect('system/category')->with('info', ['修改成功']);
     }
 
     /**

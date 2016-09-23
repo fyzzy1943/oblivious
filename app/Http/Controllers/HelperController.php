@@ -120,59 +120,95 @@ class HelperController extends Controller
         return view('helper.articleRegexTest')->with('result', $html);
     }
 
+    /**
+     **************************************************************************
+     */
+
     public function articleAreaTest(Request $request)
     {
         $html = $request->input('html');
-        $regex = $request->input('regex');
+        $regexex = explode(PHP_EOL, $request->input('regex'));
+        $matched = false;
 
-        preg_match($regex, $html, $result);
+        foreach ($regexex as $regex) {
+            if (preg_match($regex, $html, $result) == 1) {
+                $matched = true;
+                if (isset($result[1])) {
+                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                }
+            }
+        }
 
-        if (isset($result[1])) {
-            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        if ($matched) {
+            return response()->json(['message'=>'failed', 'result'=>'少侠没写括号吧~']);
         } else {
-            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+            return response()->json(['message'=>'failed', 'result'=>'没有捕获到内容 XD']);
         }
     }
 
     public function articleTitleTest(Request $request)
     {
         $html = $request->input('html');
-        $regex = $request->input('regex');
+        $regexex = explode(PHP_EOL, $request->input('regex'));
+        $matched = false;
 
-        preg_match($regex, $html, $result);
+        foreach ($regexex as $regex) {
+            if (preg_match($regex, $html, $result) == 1) {
+                $matched = true;
+                if (isset($result[1])) {
+                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                }
+            }
+        }
 
-        if (isset($result[1])) {
-            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        if ($matched) {
+            return response()->json(['message'=>'failed', 'result'=>'少侠没写括号吧~']);
         } else {
-            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+            return response()->json(['message'=>'failed', 'result'=>'没有捕获到内容 XD']);
         }
     }
 
     public function articleDateTest(Request $request)
     {
         $html = $request->input('html');
-        $regex = $request->input('regex');
+        $regexex = explode(PHP_EOL, $request->input('regex'));
+        $matched = false;
 
-        preg_match($regex, $html, $result);
+        foreach ($regexex as $regex) {
+            if (preg_match($regex, $html, $result) == 1) {
+                $matched = true;
+                if (isset($result[1])) {
+                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                }
+            }
+        }
 
-        if (isset($result[1])) {
-            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        if ($matched) {
+            return response()->json(['message'=>'failed', 'result'=>'少侠没写括号吧~']);
         } else {
-            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+            return response()->json(['message'=>'failed', 'result'=>'没有捕获到内容 XD']);
         }
     }
 
     public function articleTextTest(Request $request)
     {
         $html = $request->input('html');
-        $regex = $request->input('regex');
+        $regexex = explode(PHP_EOL, $request->input('regex'));
+        $matched = false;
 
-        preg_match($regex, $html, $result);
+        foreach ($regexex as $regex) {
+            if (preg_match($regex, $html, $result) == 1) {
+                $matched = true;
+                if (isset($result[1])) {
+                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                }
+            }
+        }
 
-        if (isset($result[1])) {
-            return response()->json(['message'=>'success', 'result'=>$result[1]]);
+        if ($matched) {
+            return response()->json(['message'=>'failed', 'result'=>'少侠没写括号吧~']);
         } else {
-            return response()->json(['message'=>'failed', 'result'=>'捕获失败']);
+            return response()->json(['message'=>'failed', 'result'=>'没有捕获到内容 XD']);
         }
     }
 

@@ -26,11 +26,13 @@
               <input type="text" class="form-control" id="url" placeholder="网址">
             </div>
             <div class="form-group">
-              <textarea class="form-control" id="html_code" placeholder="html源代码" rows="7"></textarea>
+              <textarea class="form-control" id="html_code" placeholder="html源代码" rows="10"></textarea>
             </div>
-            <div class="form-group">
-              <textarea class="form-control" id="area_regex" rows="3" placeholder="区域正则"></textarea>
+            <div class="form-group input-group">
+              <input type="text" class="form-control" id="area_regex" placeholder="区域正则">
+              <span class="input-group-btn">
                 <button class="btn btn-default" id="area_test" type="button">区域测试</button>
+              </span>
             </div>
             <div class="form-group input-group">
               <input type="text" class="form-control" id="list_regex" placeholder="列表正则">

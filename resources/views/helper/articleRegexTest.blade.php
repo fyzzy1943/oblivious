@@ -26,16 +26,16 @@
                   <textarea class="form-control" id="html_code" rows="5" placeholder="源代码" autofocus></textarea>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" id="area_regex" placeholder="区域正则">
+                  <textarea class="form-control" id="area_regex" placeholder="区域正则"></textarea>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" id="title_regex" placeholder="标题正则">
+                  <textarea class="form-control" id="title_regex" placeholder="标题正则"></textarea>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" id="date_regex" placeholder="日期正则">
+                  <textarea class="form-control" id="date_regex" placeholder="日期正则"></textarea>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" id="text_regex" placeholder="正文正则">
+                  <textarea class="form-control" id="text_regex" placeholder="正文正则"></textarea>
                 </div>
               </div>
               <div class="col-md-4">
@@ -67,6 +67,7 @@
 <script>
   $(document).ready(function () {
     $('#area_test').click(function(){
+      $('#result').val('');
       $.post('{{url('regex/article/area_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#html_code').val(),
@@ -74,13 +75,16 @@
       }, function(data, status){
         if (data.message == 'success') {
           $('#area_code').val(data.result);
+        } else if (data.message == 'failed') {
+          alert(data.result);
         } else {
-          alert(data.message);
+          alert('failed');
         }
       }, 'json');
     });
 
     $('#title_test').click(function(){
+      $('#result').val('');
       $.post('{{url('regex/article/title_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#area_code').val(),
@@ -88,13 +92,16 @@
       }, function(data, status){
         if (data.message == 'success') {
           $('#result').val(data.result);
+        } else if (data.message == 'failed') {
+          alert(data.result);
         } else {
-          alert(data.message);
+          alert('failed');
         }
       }, 'json');
     });
 
     $('#date_test').click(function(){
+      $('#result').val('');
       $.post('{{url('regex/article/date_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#area_code').val(),
@@ -102,13 +109,16 @@
       }, function(data, status){
         if (data.message == 'success') {
           $('#result').val(data.result);
+        } else if (data.message == 'failed') {
+          alert(data.result);
         } else {
-          alert(data.message);
+          alert('failed');
         }
       }, 'json');
     });
 
     $('#text_test').click(function(){
+      $('#result').val('');
       $.post('{{url('regex/article/text_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#area_code').val(),
@@ -116,8 +126,10 @@
       }, function(data, status){
         if (data.message == 'success') {
           $('#result').val(data.result);
+        } else if (data.message == 'failed') {
+          alert(data.result);
         } else {
-          alert(data.message);
+          alert('failed');
         }
       }, 'json');
     });
