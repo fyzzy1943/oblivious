@@ -2,103 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
-use App\Category;
-use App\Helper\url;
-use App\Image;
-use App\Providers\IProvider;
-use App\UpdateRule;
+use App\Rule;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Illuminate\Support\Facades\Storage;
 
 class RuleController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    protected $fills = [
+        'first'             =>  'first',
+        'second'            =>  'second',
+        'list_url'          =>  'list_url',
+        'regex_url_area'    =>  'regex_url_area',
+        'regex_url_list'    =>  'regex_url_list',
+        'regex_article'     =>  'regex_article',
+        'regex_title'       =>  'regex_title',
+        'regex_date'        =>  'regex_date',
+        'regex_text'        =>  'regex_text',
+    ];
 
     public function index()
     {
-        return view('rule.index')->with('rules', UpdateRule::all());
+        return view('rule.index')->with('rules', Rule::orderBy('created_at', 'desc')->get());
     }
 
-    public function create($serial='', $first='', $second='')
+    public function create()
     {
-        $rule = UpdateRule::where('serial', $serial)->first();
+        return view('rule.create');
+    }
 
-        if (null == $rule) {
-            return view('rule.create')->with(compact('serial', 'first', 'second'));
-        } else {
-            return view('rule.edit')->with($rule->toArray())->with(compact('first', 'second'));
+    public function store(Request $request)
+    {
+        $rule = new Rule();
+
+        foreach ($this->fills as $rk => $dk) {
+            $rule->$dk = $request->input($rk);
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Requests\RuleStoreRequest $request)
-    {
-        $ur = new UpdateRule($request->all());
-        $ur->save();
-
-        return redirect('system/category')->with('info', ['添加成功']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(UpdateRule $rule)
-    {
-        return view('rule.show', $rule);
-    }
-
-    public function edit(UpdateRule $rule)
-    {
-        return view('rule.edit')->with('rule', $rule);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $rule = UpdateRule::find($id);
-
-        $rule->url = $request->input('url');
-        $rule->url_area = $request->input('url_area');
-        $rule->url_rule = $request->input('url_rule');
-        $rule->content_area = $request->input('content_area');
-        $rule->title_rule = $request->input('title_rule');
-        $rule->date_rule = $request->input('date_rule');
-        $rule->article_rule = $request->input('article_rule');
+        $rule->setSerial();
 
         $rule->save();
 
-        return redirect('system/category')->with('info', ['修改成功']);
+        return redirect('rules')->with('info', ['创建成功', $rule->first.'-'.$rule->second.'已创建']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function show($id)
     {
         //
+    }
+
+    public function edit(Rule $rule)
+    {
+        return view('rule.edit')->with($rule->toArray());
+    }
+
+    public function update(Request $request, $id)
+    {
+        $rule = Rule::findOrFail($id);
+
+        foreach ($this->fills as $rk => $dk) {
+            $rule->$dk = $request->input($rk);
+        }
+        $rule->auto = $request->input('auto');
+
+        $rule->save();
+
+        return redirect('rules')->with('info', ['修改成功']);
+    }
+
+    public function destroy(Rule $rule)
+    {
+        $rule->delete();
+
+        return redirect('rules')->with('info', ['删除成功', $rule->first.'-'.$rule->second.'已删除']);
     }
 }

@@ -13,16 +13,26 @@ use Illuminate\Support\Facades\Storage;
 
 class UpdateController extends Controller
 {
-    public function update($serial = '*')
+    protected $ch_html = 1;
+    protected $ch_img;
+
+    public function update(Requests\UpdateRequest $request, $serial = '*')
     {
         set_time_limit(0);
         header('X-Accel-Buffering: no');
+
+        dd($this);
 
         if ($serial == '*') {
 
         } else {
             $this->makeArticle($serial, new url());
         }
+    }
+
+    protected function getUrlList($url, $regex_area, $regex_list)
+    {
+
     }
 
     public function makeArticle($serial = '*', url $helper)

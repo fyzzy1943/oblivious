@@ -26,10 +26,10 @@ class CreateRulesTable extends Migration
             $table->string('regex_url_area');
             $table->string('regex_url_list');
 
-            $table->string('regex_article');
-            $table->string('regex_title');
-            $table->string('regex_date');
-            $table->string('regex_text');
+            $table->text('regex_article');
+            $table->text('regex_title');
+            $table->text('regex_date');
+            $table->text('regex_text');
         });
     }
 

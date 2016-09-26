@@ -4,31 +4,21 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <div class="panel @if (count($errors)>0) panel-danger @else panel-info @endif">
+        <div class="panel panel-primary">
           <div class="panel-heading">
-            添加@if(!empty($first)) {!!'-><b>'.$first.'</b>'!!} @endif @if(!empty($second)) {!!'-><b>'.$second.'</b>'!!} @endif
+            新建规则
           </div>
           <div class="panel-body">
-            <form class="form-horizontal" action="{{url('system/rules')}}" method="POST">
+            <form class="form-horizontal" action="{{url('rules')}}" method="POST">
               {{csrf_field()}}
 
               @include('rule._form')
 
-              @if (count($errors) > 0)
-                <div class="alert alert-danger col-md-9 col-md-offset-2">
-                  <strong>错误!</strong>
-                  <ul>
-                    @foreach ($errors->all() as $error)
-                      <li>{{ $error }}</li>
-                    @endforeach
-                  </ul>
-                </div>
-              @endif
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-9">
                   <div class="pull-right">
                     <a href="#" onclick="history.back(-1);" class="btn btn-default">返回</a>
-                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="submit" class="btn btn-primary">新建</button>
                   </div>
                 </div>
               </div>

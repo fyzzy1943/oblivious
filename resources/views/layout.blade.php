@@ -53,8 +53,8 @@
             更新管理 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/system/category">类别列表</a></li>
-            <li><a href="/system/category/create">添加类别</a></li>
+            <li><a href="{{url('rules')}}">规则列表</a></li>
+            <li><a href="{{url('rules/create')}}">新建规则</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="/system/articles">所有文章</a></li>
           </ul>

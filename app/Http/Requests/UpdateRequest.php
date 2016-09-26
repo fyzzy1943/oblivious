@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class RuleStoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,7 @@ class RuleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'serial' => 'bail|required|unique:update_rules,serial',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'serial.unique' => '此序列号规则已存在',
+            //
         ];
     }
 }

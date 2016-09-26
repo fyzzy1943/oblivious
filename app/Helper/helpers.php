@@ -1,11 +1,11 @@
 <?php
 
 if ( ! function_exists('check_value')) {
-    function check_value($role, $checks)
+    function check_value($value, $checks)
     {
         $check = explode('|', $checks);
 
-        if (in_array($role, $check)) {
+        if (in_array($value, $check)) {
             return true;
         } else {
             return false;

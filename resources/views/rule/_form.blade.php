@@ -1,48 +1,54 @@
 <div class="form-group">
-  <label for="serial" class="col-sm-2 control-label">序列号</label>
+  <label for="first" class="col-sm-2 control-label">一级类别</label>
   <div class="col-sm-9">
-    <input type="text" class="form-control" id="serial" name="serial" value="{{$serial ?? ''}}" readonly>
+    <input type="text" class="form-control" id="first" name="first" value="{{htmlspecialchars($first ?? '')}}">
   </div>
 </div>
 <div class="form-group">
-  <label for="url" class="col-sm-2 control-label">网址</label>
+  <label for="second" class="col-sm-2 control-label">二级类别</label>
   <div class="col-sm-9">
-    <input type="text" class="form-control" id="url" name="url" value="{{$url ?? ''}}">
+    <input type="text" class="form-control" id="second" name="second" value="{{htmlspecialchars($second ?? '')}}">
   </div>
 </div>
 <div class="form-group">
-  <label for="url_area" class="col-sm-2 control-label">网址区域</label>
+  <label for="list_url" class="col-sm-2 control-label">列表网址</label>
   <div class="col-sm-9">
-    <input type="text" class="form-control" id="url_area" name="url_area" value="{{$url_area ?? ''}}">
+    <input type="text" class="form-control" id="list_url" name="list_url" value="{{htmlspecialchars($list_url ?? '')}}">
   </div>
 </div>
 <div class="form-group">
-  <label for="url_rule" class="col-sm-2 control-label">网址获取规则</label>
+  <label for="regex_url_area" class="col-sm-2 control-label">网址区域正则</label>
   <div class="col-sm-9">
-    <input type="text" class="form-control" id="url_rule" name="url_rule" value="{{$url_rule ?? ''}}">
+    <input type="text" class="form-control" id="regex_url_area" name="regex_url_area" value="{{htmlspecialchars($regex_url_area ?? '')}}">
   </div>
 </div>
 <div class="form-group">
-  <label for="content_area" class="col-sm-2 control-label">内容区域</label>
+  <label for="regex_url_list" class="col-sm-2 control-label">网址列表正则</label>
   <div class="col-sm-9">
-    <textarea class="form-control" id="content_area" name="content_area">{{$content_area ?? ''}}</textarea>
+    <input type="text" class="form-control" id="regex_url_list" name="regex_url_list" value="{{htmlspecialchars($regex_url_list ?? '')}}">
   </div>
 </div>
 <div class="form-group">
-  <label for="title_rule" class="col-sm-2 control-label">标题规则</label>
+  <label for="regex_article" class="col-sm-2 control-label">文章区域正则</label>
   <div class="col-sm-9">
-    <textarea class="form-control" id="title_rule" name="title_rule">{{$title_rule ?? ''}}</textarea>
+    <textarea class="form-control" id="regex_article" name="regex_article">{{htmlspecialchars($regex_article ?? '')}}</textarea>
   </div>
 </div>
 <div class="form-group">
-  <label for="date_rule" class="col-sm-2 control-label">日期规则</label>
+  <label for="regex_title" class="col-sm-2 control-label">标题正则</label>
   <div class="col-sm-9">
-    <textarea class="form-control" id="date_rule" name="date_rule">{{$date_rule ?? ''}}</textarea>
+    <textarea class="form-control" id="regex_title" name="regex_title">{{htmlspecialchars($regex_title ?? '')}}</textarea>
   </div>
 </div>
 <div class="form-group">
-  <label for="article_rule" class="col-sm-2 control-label">正文规则</label>
+  <label for="regex_date" class="col-sm-2 control-label">日期正则</label>
   <div class="col-sm-9">
-    <textarea class="form-control" id="article_rule" name="article_rule">{{$article_rule ?? ''}}</textarea>
+    <textarea class="form-control" id="regex_date" name="regex_date">{{htmlspecialchars($regex_date ?? '')}}</textarea>
+  </div>
+</div>
+<div class="form-group">
+  <label for="regex_text" class="col-sm-2 control-label">正文正则</label>
+  <div class="col-sm-9">
+    <textarea class="form-control" id="regex_text" name="regex_text">{{htmlspecialchars($regex_text ?? '')}}</textarea>
   </div>
 </div>

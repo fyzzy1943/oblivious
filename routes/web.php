@@ -19,6 +19,13 @@ Route::post('logout', 'Auth\LoginController@logout');
 
 Route::get('home', 'HomeController@index');
 
+Route::resource('rules', 'RuleController');
+
+Route::resource('articles', 'ArticleController');
+Route::get('articles/serial/{serial}', 'ArticleController@index');
+
+Route::get('update/{serial?}', 'UpdateController@update');
+
 Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::get('users', 'UserController@index');
     Route::get('users/create', 'UserController@create');
@@ -30,12 +37,6 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::post('category', 'CategoryController@store');
     Route::get('category/{id}/edit', 'CategoryController@edit');
     Route::put('category/{id}', 'CategoryController@update');
-
-    Route::resource('rules', 'RuleController');
-    Route::get('rules/create/{serial?}/{first?}/{second?}', 'RuleController@create');
-
-    Route::resource('articles', 'ArticleController');
-    Route::get('articles/serial/{serial}', 'ArticleController@index');
 });
 
 Route::group(['prefix' => 'get'], function () {
@@ -55,7 +56,6 @@ Route::group(['prefix' => 'regex'], function () {
     Route::post('list/list_test', 'HelperController@listListTest');
 });
 
-Route::get('update/{serial?}', 'UpdateController@update');
 
 Route::get('phpinfo/{st}', function ($st) {
     dd(str_plural($st));
