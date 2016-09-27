@@ -26,10 +26,10 @@
         <tr>
           <th data-width="15%">一级类别</th>
           <th data-width="15%">二级类别</th>
-          <th>网址</th>
+          <th data-width="20%">网址</th>
           <th data-width="20%">序列号</th>
           <th data-width="10%">自动更新</th>
-          <th data-width="18%" data-orderable="false">操作</th>
+          <th data-width="20%" data-orderable="false">操作</th>
         </tr>
         </thead>
         <tbody>

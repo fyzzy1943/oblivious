@@ -131,7 +131,7 @@ class HelperController extends Controller
         $matched = false;
 
         foreach ($regexex as $regex) {
-            if (preg_match($regex, $html, $result) == 1) {
+            if (preg_match(trim($regex), $html, $result) == 1) {
                 $matched = true;
                 if (isset($result[1])) {
                     return response()->json(['message'=>'success', 'result'=>$result[1]]);
@@ -153,10 +153,10 @@ class HelperController extends Controller
         $matched = false;
 
         foreach ($regexex as $regex) {
-            if (preg_match($regex, $html, $result) == 1) {
+            if (preg_match(trim($regex), $html, $result) == 1) {
                 $matched = true;
                 if (isset($result[1])) {
-                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                    return response()->json(['message'=>'success', 'result'=>trim($result[1])]);
                 }
             }
         }
@@ -175,10 +175,10 @@ class HelperController extends Controller
         $matched = false;
 
         foreach ($regexex as $regex) {
-            if (preg_match($regex, $html, $result) == 1) {
+            if (preg_match(trim($regex), $html, $result) == 1) {
                 $matched = true;
                 if (isset($result[1])) {
-                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                    return response()->json(['message'=>'success', 'result'=>'发布时间：'.trim($result[1])]);
                 }
             }
         }
@@ -197,10 +197,10 @@ class HelperController extends Controller
         $matched = false;
 
         foreach ($regexex as $regex) {
-            if (preg_match($regex, $html, $result) == 1) {
+            if (preg_match(trim($regex), $html, $result) == 1) {
                 $matched = true;
                 if (isset($result[1])) {
-                    return response()->json(['message'=>'success', 'result'=>$result[1]]);
+                    return response()->json(['message'=>'success', 'result'=>trim($result[1])]);
                 }
             }
         }
@@ -217,7 +217,7 @@ class HelperController extends Controller
         $html = $request->input('html');
         $regex = $request->input('regex');
 
-        preg_match($regex, $html, $result);
+        preg_match(trim($regex), $html, $result);
 
         if (isset($result[1])) {
             return response()->json(['message'=>'success', 'result'=>$result[1]]);
@@ -232,7 +232,7 @@ class HelperController extends Controller
         $html = $request->input('html');
         $regex = $request->input('regex');
 
-        preg_match_all($regex, $html, $result);
+        preg_match_all(trim($regex), $html, $result);
 
         $html = $result[1] ?? '';
         if (empty($html)) {
