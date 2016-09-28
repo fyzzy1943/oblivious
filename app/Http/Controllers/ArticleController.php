@@ -14,6 +14,7 @@ class ArticleController extends Controller
         if ($serial == '') {
             $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
                 ->orderBy('articles.created_at', 'desc')
+                ->orderBy('articles.id', 'desc')
                 ->join('rules', 'articles.serial', 'rules.serial')
                 ->get();
 
@@ -22,6 +23,7 @@ class ArticleController extends Controller
             $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
                 ->where('articles.serial', $serial)
                 ->orderBy('articles.created_at', 'desc')
+                ->orderBy('articles.id', 'desc')
                 ->join('rules', 'articles.serial', 'rules.serial')
                 ->get();
 
@@ -81,5 +83,34 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function reviewIndex()
+    {
+        $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
+            ->where('articles.review', 0)
+            ->orderBy('articles.created_at', 'desc')
+            ->orderBy('articles.id', 'desc')
+            ->join('rules', 'articles.serial', 'rules.serial')
+            ->get();
+
+        return view('article.review_index')->with('articles', $articles);
+    }
+
+    public function reviewForm(Article $article)
+    {
+        return view('article.review')->with($article->toArray());
+    }
+
+    public function review(Request $request, Article $article)
+    {
+        $article->title = $request->input('title');
+        $article->date = $request->input('date');
+        $article->article = $request->input('article');
+        $article->review = 1;
+
+        $article->save();
+
+        return redirect('articles-under-review');
     }
 }

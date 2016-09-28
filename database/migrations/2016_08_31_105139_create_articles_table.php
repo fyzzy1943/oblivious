@@ -19,7 +19,7 @@ class CreateArticlesTable extends Migration
             $table->string('serial')->unique();
             $table->string('title');
             $table->string('date');
-            $table->text('article');
+            $table->longText('article');
         });
     }
 

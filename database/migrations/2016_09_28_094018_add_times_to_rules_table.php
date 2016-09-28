@@ -14,8 +14,8 @@ class AddTimesToRulesTable extends Migration
     public function up()
     {
         Schema::table('rules', function (Blueprint $table) {
-            $table->unsignedInteger('update_times');
-            $table->unsignedInteger('regex_times');
+            $table->unsignedInteger('update_times')->default(0);
+            $table->unsignedInteger('regex_times')->default(0);
         });
     }
 

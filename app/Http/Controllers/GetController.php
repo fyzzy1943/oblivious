@@ -19,7 +19,7 @@ class GetController extends Controller
     public function getArticles($serial, $num = 10)
     {
         $articles = Article::select('title', 'date', 'article')
-            ->where('serial', $serial)
+            ->where(['serial'=>$serial, 'review'=>1])
             ->orderBy('id', 'desc')
             ->limit($num)
             ->get();
