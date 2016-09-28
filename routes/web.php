@@ -31,11 +31,11 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::post('users', 'UserController@store');
     Route::delete('users/{user}', 'UserController@destroy');
 
-    Route::get('category', 'CategoryController@showCategoryList');
-    Route::get('category/create', 'CategoryController@showCategoryCreateForm');
-    Route::post('category', 'CategoryController@store');
-    Route::get('category/{id}/edit', 'CategoryController@edit');
-    Route::put('category/{id}', 'CategoryController@update');
+//    Route::get('category', 'CategoryController@showCategoryList');
+//    Route::get('category/create', 'CategoryController@showCategoryCreateForm');
+//    Route::post('category', 'CategoryController@store');
+//    Route::get('category/{id}/edit', 'CategoryController@edit');
+//    Route::put('category/{id}', 'CategoryController@update');
 });
 
 Route::group(['prefix' => 'get'], function () {

@@ -12,10 +12,19 @@ class ArticleController extends Controller
     public function index($serial = '')
     {
         if ($serial == '') {
-            $articles = Article::orderBy('articles.created_at', 'desc')->join('rules', 'articles.serial', 'rules.serial')->get();
+            $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
+                ->orderBy('articles.created_at', 'desc')
+                ->join('rules', 'articles.serial', 'rules.serial')
+                ->get();
+
             return view('article.index')->with('articles', $articles);
         } else {
-            $articles = Article::where('articles.serial', $serial)->orderBy('articles.created_at', 'desc')->join('rules', 'articles.serial', 'rules.serial')->get();
+            $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
+                ->where('articles.serial', $serial)
+                ->orderBy('articles.created_at', 'desc')
+                ->join('rules', 'articles.serial', 'rules.serial')
+                ->get();
+
             return view('article.index')->with('articles', $articles);
         }
     }
@@ -46,15 +55,9 @@ class ArticleController extends Controller
         return view('article.show')->with($article->toArray());
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        return view('article.edit')->with($article->toArray());
     }
 
     /**
