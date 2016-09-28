@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-2 col-sm-9">
                   <button type="submit" class="btn btn-primary">确定</button>
                   <a href="#" onclick="history.back(-1)" class="btn btn-default">返回</a>
                 </div>

@@ -36,6 +36,17 @@ class UserController extends Controller
         return redirect('system/users')->with('info', [$user->name . '添加成功']);
     }
 
+    public function edit(Request $request, User $user)
+    {
+        $request->session()->flash('_old_input.nickname', 'aaa');
+        return view('user.edit')->with($user->toArray());
+    }
+
+    public function update(Request $request, User $user)
+    {
+
+    }
+
     public function destroy(User $user)
     {
         $user->delete();

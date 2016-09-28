@@ -6,7 +6,7 @@
     <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-info">
         <div class="panel-heading">
-          添加用户
+          <div class="panel-title">添加用户</div>
         </div>
         <div class="panel-body">
           <div class="row">

@@ -22,17 +22,17 @@
         <table id="table_id" class="table table-striped table-bordered">
           <thead>
           <tr>
-            <th>标题</th>
-            <th>分类</th>
-            <th>日期</th>
-            <th>更新时间</th>
-            <th data-orderable="false">操作</th>
+            <th data-width="50%">标题</th>
+            <th data-width="15%">分类</th>
+            <th data-width="10%">日期</th>
+            <th data-width="10%">更新时间</th>
+            <th data-width="15%" data-orderable="false">操作</th>
           </tr>
           </thead>
           <tbody>
           @foreach($articles as $article)
             <tr>
-              <td>{{$article->title}}</td>
+              <td title="{{$article->title}}">{{str_limit($article->title, 65, ' [...]')}}</td>
               <td>{{$article->first.'-'.$article->second}}</td>
               <td>{{ltrim($article->date, '发布时间：')}}</td>
               <td>{{$article->created_at->format('Y-m-d')}}</td>
