@@ -23,21 +23,25 @@
         <thead>
         <tr>
           <th>标题</th>
+          <th>分类</th>
           <th>日期</th>
           <th>更新时间</th>
-          <th>操作</th>
+          <th data-orderable="false">操作</th>
         </tr>
         </thead>
         <tbody>
         @foreach($articles as $article)
           <tr>
             <td>{{$article->title}}</td>
+            <td>{{$article->first.'-'.$article->second}}</td>
             <td>{{ltrim($article->date, '发布时间：')}}</td>
-            <td>{{$article->created_at}}</td>
+            <td>{{$article->created_at->format('Y-m-d')}}</td>
             <td>
-              <a href="/system/articles/{{$article->id}}/edit">修改</a>
+              <a href="/articles/{{$article->id}}">查看</a>
               |
-              <a href="/system/articles/{{$article->id}}">删除</a>
+              <a href="/articles/{{$article->id}}/edit">修改</a>
+              |
+              <a href="/articles/{{$article->id}}">删除</a>
             </td>
           </tr>
         @endforeach
@@ -54,7 +58,9 @@
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script>
   $(document).ready( function () {
-    $('#table_id').DataTable();
+    $('#table_id').DataTable({
+      'order': []
+    });
   } );
 </script>
 @endsection

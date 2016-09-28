@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Image;
+use App\Rule;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -22,6 +23,8 @@ class GetController extends Controller
             ->orderBy('id', 'desc')
             ->limit($num)
             ->get();
+
+        Rule::increment('update_times');
 
         return count($articles) != 0 ? $articles->toJson() : 'null';
     }

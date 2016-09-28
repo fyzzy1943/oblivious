@@ -55,6 +55,8 @@ class UpdateController extends Controller
 
     protected function updateArticle(Rule $rule)
     {
+        $rule->increment('regex_times');
+
         $this->echoLine('<pre>开始更新【'.$rule->first.'-'.$rule->second.'】');
         curl_setopt($this->ch_html, CURLOPT_URL, $rule->list_url);
 
@@ -164,7 +166,6 @@ class UpdateController extends Controller
 
     protected function processArticle($article)
     {
-
         // 处理换行
         $article = preg_replace('/(<\/p>|<\/div>|<\/h\d>)/i', '\1{{br}}', $article);
         $article = preg_replace('/(<br.*?\/>|<br.*?>)/i', '\1{{br}}', $article);

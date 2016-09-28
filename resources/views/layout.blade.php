@@ -58,7 +58,7 @@
             <li><a href="{{url('rules')}}">规则列表</a></li>
             <li><a href="{{url('rules/create')}}">新建规则</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/system/articles">所有文章</a></li>
+            <li><a href="/articles">所有文章</a></li>
           </ul>
         </li>
         <li class="dropdown">

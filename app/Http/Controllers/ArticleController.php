@@ -12,9 +12,11 @@ class ArticleController extends Controller
     public function index($serial = '')
     {
         if ($serial == '') {
-            return view('article.index')->with('articles', Article::orderBy('created_at', 'desc')->get());
+            $articles = Article::orderBy('articles.created_at', 'desc')->join('rules', 'articles.serial', 'rules.serial')->get();
+            return view('article.index')->with('articles', $articles);
         } else {
-            return view('article.index')->with('articles', Article::where('serial', $serial)->orderBy('created_at', 'desc')->get());
+            $articles = Article::where('articles.serial', $serial)->orderBy('articles.created_at', 'desc')->join('rules', 'articles.serial', 'rules.serial')->get();
+            return view('article.index')->with('articles', $articles);
         }
     }
 
