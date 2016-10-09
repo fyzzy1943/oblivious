@@ -9,18 +9,18 @@
             <div class="panel-title">编辑用户</div>
           </div>
           <div class="panel-body">
+            @if (count($errors) > 0)
             <div class="row">
-              @if (count($errors) > 0)
-                <div class="alert alert-danger col-md-10 col-md-offset-1">
-                  <strong>错误!</strong>
-                  <ul>
-                    @foreach ($errors->all() as $error)
-                      <li>{{ $error }}</li>
-                    @endforeach
-                  </ul>
-                </div>
-              @endif
+              <div class="alert alert-danger col-md-10 col-md-offset-1">
+                <strong>错误!</strong>
+                <ul>
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              </div>
             </div>
+            @endif
 
             <form class="form-horizontal" action="/system/users/{{$id}}" method="POST">
               {{method_field('PUT')}}

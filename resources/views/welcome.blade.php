@@ -22,6 +22,19 @@
       <div class="panel panel-default">
         <div class="panel-heading">内容更新管理系统</div>
         <div class="panel-body">
+          @if (count($errors) > 0)
+            <div class="row">
+              <div class="alert alert-danger col-md-10 col-md-offset-1">
+                <strong>错误!</strong>
+                <ul>
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+          @endif
+
           <form action="{{url('login')}}" method="POST" class="form-horizontal">
             {{csrf_field()}}
 
