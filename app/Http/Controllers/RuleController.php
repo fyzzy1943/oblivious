@@ -6,6 +6,7 @@ use App\Rule;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class RuleController extends Controller
 {
@@ -39,6 +40,8 @@ class RuleController extends Controller
             $rule->$dk = $request->input($rk);
         }
         $rule->setSerial();
+        $rule->created_uid = Auth::user()->id;
+        $rule->updated_uid = Auth::user()->id;
 
         $rule->save();
 
@@ -63,6 +66,7 @@ class RuleController extends Controller
             $rule->$dk = $request->input($rk);
         }
         $rule->auto = $request->input('auto');
+        $rule->updated_uid = Auth::user()->id;
 
         $rule->save();
 
