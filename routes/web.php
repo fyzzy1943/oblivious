@@ -36,6 +36,8 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
     Route::put('users/{user}', 'UserController@update');
     Route::delete('users/{user}', 'UserController@destroy');
 
+    Route::get('board', 'HomeController@board');
+
 //    Route::get('category', 'CategoryController@showCategoryList');
 //    Route::get('category/create', 'CategoryController@showCategoryCreateForm');
 //    Route::post('category', 'CategoryController@store');

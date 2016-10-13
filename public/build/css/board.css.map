@@ -1,0 +1,1 @@
+{"version":3,"sources":["board.scss"],"names":[],"mappings":"AAEA;EACE,UAAU;EACV,WAAW,EACZ","file":"board.css","sourcesContent":["@charset \"utf-8\";\r\n\r\nbody{\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n"]}

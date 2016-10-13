@@ -46,6 +46,8 @@
             <ul class="dropdown-menu">
               <li><a href="/system/users">用户列表</a></li>
               <li><a href="/system/users/create">添加用户</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/system/board">查看统计</a></li>
             </ul>
           </li>
         @endif
