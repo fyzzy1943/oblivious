@@ -29,7 +29,7 @@ class backup extends Mailable
      */
     public function build()
     {
-        return $this->subject('内容管理系统-数据库备份')
+        return $this->subject('mysql数据库备份')
             ->from('csiris@126.com', 'mysql')
             ->view('email.backup')
             ->attach('/home/fyzzy/db.sql.gz')
