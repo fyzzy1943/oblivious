@@ -112,4 +112,6 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
+    'mysql_backup' => '122567403@qq.com',
+
 ];
