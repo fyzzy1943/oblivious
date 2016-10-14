@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'csiris@126.com',
-        'name' => '数据库备份',
+        'address' => '122567403@qq.com',
+        'name' => '系统管理员',
     ],
 
     /*
