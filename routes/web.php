@@ -38,6 +38,8 @@ Route::group(['as' => 'system', 'prefix' => 'system'], function () {
 
     Route::get('board', 'HomeController@board');
 
+    Route::get('backup', 'SomeController@backupMysql');
+
 //    Route::get('category', 'CategoryController@showCategoryList');
 //    Route::get('category/create', 'CategoryController@showCategoryCreateForm');
 //    Route::post('category', 'CategoryController@store');
