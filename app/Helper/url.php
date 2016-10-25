@@ -8,6 +8,7 @@
 
 namespace App\Helper;
 
+use League\Uri\Schemes\Http as HttpUri;
 
 class url
 {
@@ -24,12 +25,21 @@ class url
 
     public function getFullUrl($part1, $part2)
     {
-//        dd(hash('sha1', uniqid()));
         if (empty($part1)) {
             return $part2;
         }
+
+        $uri1 = HttpUri::createFromString($part1);
+
+        $part1 = $uri1->getScheme() . '://' . $uri1->getHost() . $uri1->path->getDirname();
+
+//        dd(hash('sha1', uniqid()));
+        if (count($part2) == 0) {
+            return $part1;
+        }
+
         if ($part2[0] == '/') {
-            return $this->getDomain($part1) . $part2;
+            return $uri1->getScheme() . '://' . $uri1->getHost() . $part2;
         }
 
         $part1 = rtrim($part1, '/') . '/';
@@ -51,7 +61,7 @@ class url
             }
         }
 
-        return strrev($part1) . '/' .$part2;
+        return strrev($part1) . $part2;
     }
 
     public function getFullImageUrl($part1, $part2)

@@ -64,11 +64,9 @@ Route::group(['prefix' => 'regex'], function () {
     Route::post('list/list_test', 'HelperController@listListTest');
 });
 
-
-Route::get('phpinfo/{st}', function ($st) {
-    dd(str_plural($st));
-    dd(url('system/users'));
+Route::get('test/{p1}/{p2}', 'SomeController@test');
+Route::get('phpinfo/{st?}', function ($st=null) {
+//    dd(str_plural($st));
+//    dd(url('system/users'));
     return phpinfo();
 });
-
-

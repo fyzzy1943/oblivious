@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\url;
 use App\Mail\backup;
 use Illuminate\Http\Request;
 
@@ -16,5 +17,10 @@ class SomeController extends Controller
         exec('gzip /home/fyzzy/db.sql');
 
         Mail::to(config('mail.mysql_backup'))->send(new backup());
+    }
+
+    public function test($p1, $p2)
+    {
+        (new url())->getFullUrl($p1, $p2);
     }
 }
