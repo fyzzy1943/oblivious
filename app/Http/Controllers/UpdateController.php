@@ -81,6 +81,8 @@ class UpdateController extends Controller
             $html = curl_exec($this->ch_html);
             $html = mb_convert_encoding($html, 'utf-8', 'GBK, UTF-8, ASCII');
 
+            $this->echoLine('当前更新：【<a href="'.$url.'" target="_blank">'.$url.'</a>】');
+
             // 获取内容区域
             foreach (explode(PHP_EOL, $rule->regex_article) as $regex) {
                 if (1==preg_match(trim($regex), $html, $match)) {
