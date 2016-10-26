@@ -19,8 +19,12 @@ class SomeController extends Controller
         Mail::to(config('mail.mysql_backup'))->send(new backup());
     }
 
-    public function test($p1, $p2)
+    public function test($p1='', $p2='')
     {
         (new url())->getFullUrl($p1, $p2);
+//storage/app/public/20161026/5d9dca2ca5844768883dd080da84e49010456e07
+        $img_info = getimagesize('storage/20161026/5d9dca2ca5844768883dd080da84e49010456e07');
+
+        dd($img_info);
     }
 }

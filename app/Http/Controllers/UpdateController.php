@@ -138,18 +138,27 @@ class UpdateController extends Controller
                 $this->echoLine('本篇文章存在【'.count($images).'】图片，开始下载');
 
                 foreach ($images as $key => $val) {
+                    $this->echoLine('图片' . $key . '开始下载');
+
                     curl_setopt($this->ch_img, CURLOPT_URL, $val);
                     curl_setopt($this->ch_img, CURLOPT_REFERER, $url);
                     $result = curl_exec($this->ch_img);
+
                     $path = date("Ymd").'/'.$key;
                     Storage::put($path, $result);
 
+//                    dd(Storage::url($path));
+
+                    $img_info = getimagesize('storage'.'/'.$path);
+
+                    if ($img_info == false) {
+                        $this->echoLine('这张图片下载失败');
+                    }
+
                     $image = new Image();
                     $image->img = $key;
-                    $image->path = $path;
+                    $image->path = $img_info != false ? $path : 'false';
                     $image->save();
-
-                    $this->echoLine('图片' . $key . '下载完成');
                 }
             }
 
