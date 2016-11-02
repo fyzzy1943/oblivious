@@ -6,6 +6,7 @@ use App\Article;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -89,6 +90,19 @@ class ArticleController extends Controller
     {
         $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
             ->where('articles.review', 0)
+            ->orderBy('articles.created_at', 'desc')
+            ->orderBy('articles.id', 'desc')
+            ->join('rules', 'articles.serial', 'rules.serial')
+            ->get();
+
+        return view('article.review_index')->with('articles', $articles);
+    }
+
+    public function myReview()
+    {
+        $articles = Article::select('articles.id AS id', 'first', 'second', 'title', 'date', 'articles.created_at as created_at')
+            ->where('articles.review', 0)
+            ->where('review_uid', Auth::user()->id)
             ->orderBy('articles.created_at', 'desc')
             ->orderBy('articles.id', 'desc')
             ->join('rules', 'articles.serial', 'rules.serial')

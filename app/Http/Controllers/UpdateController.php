@@ -152,7 +152,7 @@ class UpdateController extends Controller
                     $img_info = getimagesize('storage'.'/'.$path);
 
                     if ($img_info == false) {
-                        $this->echoLine('这张图片下载失败');
+                        $this->echoLine('*这张图片下载失败');
                     }
 
                     $image = new Image();
