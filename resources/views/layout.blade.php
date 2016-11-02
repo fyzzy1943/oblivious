@@ -61,7 +61,9 @@
             <li><a href="{{url('rules/create')}}">新建规则</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="/articles">所有文章</a></li>
-            <li><a href="/articles-under-review">未审查文章</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/articles-under-review">所有未审查文章</a></li>
+            <li><a href="/my-articles-under-review">我的未审查文章</a></li>
           </ul>
         </li>
         <li class="dropdown">

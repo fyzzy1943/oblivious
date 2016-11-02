@@ -23,6 +23,7 @@ Route::resource('rules', 'RuleController');
 Route::resource('articles', 'ArticleController');
 Route::get('articles/serial/{serial}', 'ArticleController@index');
 Route::get('articles-under-review', 'ArticleController@reviewIndex');
+Route::get('my-articles-under-review', 'ArticleController@myReview');
 Route::get('articles/{article}/review', 'ArticleController@reviewForm');
 Route::put('articles/{article}/review', 'ArticleController@review');
 

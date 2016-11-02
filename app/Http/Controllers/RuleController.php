@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Rule;
 use Illuminate\Http\Request;
 
@@ -42,15 +43,18 @@ class RuleController extends Controller
         $rule->setSerial();
         $rule->created_uid = Auth::user()->id;
         $rule->updated_uid = Auth::user()->id;
+        $rule->review_uid = Auth::user()->id;
+        $rule->update_wheel_uid = Auth::user()->id;
 
         $rule->save();
 
         return redirect('rules')->with('info', ['创建成功', $rule->first.'-'.$rule->second.'已创建']);
     }
 
-    public function show($id)
+    public function show(Rule $rule)
     {
-        //
+        $articles_count = Article::where('serial', $rule->serial)->count();
+        return view('rule.show')->with($rule->toArray())->with('articles_count', $articles_count);
     }
 
     public function edit(Rule $rule)
