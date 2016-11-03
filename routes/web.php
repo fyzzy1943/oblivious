@@ -27,6 +27,8 @@ Route::get('my-articles-under-review', 'ArticleController@myReview');
 Route::get('articles/{article}/review', 'ArticleController@reviewForm');
 Route::put('articles/{article}/review', 'ArticleController@review');
 
+Route::resource('block_urls', 'BlockUrlController');
+
 Route::get('update/{serial?}', 'UpdateController@update');
 
 Route::group(['as' => 'system', 'prefix' => 'system'], function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\BlockUrl;
 use App\Helper\url;
 use App\Image;
 use App\Rule;
@@ -76,6 +77,12 @@ class UpdateController extends Controller
 
         // 更新文章
         foreach (array_reverse($urls) as $url) {
+
+            if (BlockUrl::where('url', $url)->exists()) {
+                $this->echoLine('【'.$url.'】在黑名单中，略过');
+                continue;
+            }
+
 //            $url = 'http://www.hljlr.gov.cn/hljgtzyt/xwdt/tndt/201609/t20160905_146597.htm';
             curl_setopt($this->ch_html, CURLOPT_URL, $url);
             $html = curl_exec($this->ch_html);

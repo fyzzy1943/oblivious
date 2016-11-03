@@ -60,6 +60,7 @@
             <li><a href="{{url('rules')}}">规则列表</a></li>
             <li><a href="{{url('rules/create')}}">新建规则</a></li>
             <li role="separator" class="divider"></li>
+            <li><a href="/block_urls">URL黑名单</a></li>
             <li><a href="/articles">所有文章</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="/articles-under-review">所有未审查文章</a></li>
