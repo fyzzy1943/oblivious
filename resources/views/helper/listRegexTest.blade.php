@@ -61,6 +61,7 @@
 <script>
   $(document).ready(function () {
     $('#area_test').click(function () {
+      $('#area_code').val('');
       $.post('{{url('regex/list/area_test')}}', {
         _token: '{{csrf_token()}}',
         html: $('#html_code').val(),
@@ -75,6 +76,7 @@
     });
 
     $('#list_test').click(function () {
+      $('#list_result').val('');
       $.post('{{url('regex/list/list_test')}}', {
         _token: '{{csrf_token()}}',
         url: $('#url').val(),

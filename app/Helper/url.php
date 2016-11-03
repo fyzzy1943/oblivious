@@ -29,9 +29,13 @@ class url
             return $part2;
         }
 
+        if (starts_with($part2, 'http')) {
+            return $part2;
+        }
+
         $uri1 = HttpUri::createFromString($part1);
 
-        $part1 = $uri1->getScheme() . '://' . $uri1->getHost() . $uri1->path->getDirname();
+        $part1 = $uri1->getScheme() . '://' . $uri1->getHost() . $uri1->getPath();
 
 //        dd(hash('sha1', uniqid()));
         if (count($part2) == 0) {
@@ -45,10 +49,13 @@ class url
         $part1 = rtrim($part1, '/') . '/';
         $part1 = strrev($part1);
 
+        $part2 = ltrim($part2, '/');
+//dd($part1);
+
         while (true) {
             if (starts_with($part2, './')) {
                 $part2 = substr($part2, 2);
-                $part1 = substr($part1, strpos($part1, '/') + 1);
+//                $part1 = substr($part1, strpos($part1, '/') + 1);
             } else if (starts_with($part2, '../')) {
                 if (starts_with($part1, '/')) {
                     $part1 = substr($part1, strpos($part1, '/') + 1);
@@ -61,7 +68,7 @@ class url
             }
         }
 
-        return strrev($part1) . $part2;
+        return rtrim(strrev($part1), '/') . '/' . $part2;
     }
 
     public function getFullImageUrl($part1, $part2)
