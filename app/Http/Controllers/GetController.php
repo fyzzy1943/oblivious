@@ -46,7 +46,13 @@ class GetController extends Controller
 
     public function getTitle($title, $isShadow)
     {
-        $title = base64_decode($title);
+        $data = str_replace(array('-','_'),array('+','/'),$title);
+        $mod4 = strlen($data) % 4;
+        if ($mod4) {
+            $data .= substr('====', $mod4);
+        }
+
+        $title = base64_decode($data);
 
         $image = new \Imagick();
         $image->newImage(750, 50, new \ImagickPixel('#fff'));
