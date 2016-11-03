@@ -46,6 +46,8 @@ class GetController extends Controller
 
     public function getTitle($title, $isShadow)
     {
+        $title = base64_decode($title);
+
         $image = new \Imagick();
         $image->newImage(750, 50, new \ImagickPixel('#fff'));
         $image->setImageFormat('png');
