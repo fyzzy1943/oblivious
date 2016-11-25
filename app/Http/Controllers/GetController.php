@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class GetController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function getArticles($serial, $num = 10)
     {
         $articles = Article::select('title', 'date', 'article')
