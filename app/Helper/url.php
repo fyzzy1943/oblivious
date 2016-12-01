@@ -192,6 +192,6 @@ class url
             }
         }
 
-        return strrev($part1) . '/' .$part2;
+        return strrev($part1)  .$part2;
     }
 }

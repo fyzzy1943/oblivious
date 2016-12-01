@@ -69,9 +69,14 @@ class UpdateController extends Controller
         preg_match($rule->regex_url_area, $html, $match);
         preg_match_all($rule->regex_url_list, $match[1], $urls);
 
+        // 获得base url
+        preg_match('/<head>.*?<base href=[\'\"](.*?)[\'\"]\/?>/s', $html, $match);
+        $base_url = $match[1] ?? $rule->list_url;
+
+//        dd($base_url);
         // 组合内容页面URL
-        $urls = array_map(function ($url) use ($rule) {
-            return $this->url_helper->getFullUrl($rule->list_url, $url);
+        $urls = array_map(function ($url) use ($base_url) {
+            return $this->url_helper->getFullUrl($base_url, $url);
         }, $urls[1]);
         $this->echoLine('文章url组合完毕, 本次预计更新【' . count($urls) . '】条');
 
@@ -135,17 +140,19 @@ class UpdateController extends Controller
 //            echo $html_text;
 //            dd($html_text, $text[1]);
 
+            $base_url = $base_url ?? $url;
+
             // 得到图片数组
-            $images = array_map(function ($image) use ($url) {
-                return $this->url_helper->getFullImageUrl($url, $image);
+            $images = array_map(function ($image) use ($base_url) {
+                return $this->url_helper->getFullImageUrl($base_url, $image);
             }, $images);
 
             // 下载图片
             if (count($images) > 0) {
-                $this->echoLine('本篇文章存在【'.count($images).'】图片，开始下载');
+                $this->echoLine('本篇文章存在【'.count($images).'】张图片，开始下载');
 
                 foreach ($images as $key => $val) {
-                    $this->echoLine('图片' . $key . '开始下载');
+                    $this->echoLine('图片' . $val . '['.$key.']' . '开始下载');
 
                     curl_setopt($this->ch_img, CURLOPT_URL, $val);
                     curl_setopt($this->ch_img, CURLOPT_REFERER, $url);
