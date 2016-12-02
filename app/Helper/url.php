@@ -121,10 +121,8 @@ class url
         $part1 = $temp[0];
 
         $uri1 = HttpUri::createFromString($part1);
-        $uri2 = HttpUri::createFromString($part2);
-        $uri1->path->append($part2);
 
-        dd($uri1);
+//        dd($uri1);
 
         $part1 = $uri1->getScheme() . '://' . $uri1->getHost() . $uri1->getPath();
 
