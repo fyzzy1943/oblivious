@@ -22,6 +22,12 @@ class GetController extends Controller
 
         Rule::increment('update_times');
 
+        foreach ($articles as &$article) {
+            $article['article'] = html_entity_decode($article['article']);
+        }
+
+        dd($articles);
+
         return count($articles) != 0 ? $articles->toJson() : 'null';
     }
 
