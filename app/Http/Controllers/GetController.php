@@ -26,8 +26,6 @@ class GetController extends Controller
             $article['article'] = html_entity_decode($article['article']);
         }
 
-        dd($articles);
-
         return count($articles) != 0 ? $articles->toJson() : 'null';
     }
 
