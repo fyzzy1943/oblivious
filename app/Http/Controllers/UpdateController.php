@@ -110,7 +110,7 @@ class UpdateController extends Controller
                     break;
                 }
             }
-            $title = trim($title[1]);
+            $title = html_entity_decode(trim($title[1]));
 
             if (Article::where(['title'=>$title, 'serial'=>$rule->serial])->exists()) {
                 $this->echoLine('【' . $title . '】已经存在，自动略过');
