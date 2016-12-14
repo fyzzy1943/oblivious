@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => '122567403@qq.com',
-        'name' => '系统管理员',
+        'address' => '874054690@qq.com',
+        'name' => '内容更新系统管理员',
     ],
 
     /*
@@ -112,6 +112,6 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
-    'mysql_backup' => '122567403@qq.com',
+    'mysql_backup' => '874054690@qq.com',
 
 ];
